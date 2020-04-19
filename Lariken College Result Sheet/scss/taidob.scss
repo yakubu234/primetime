@@ -1,0 +1,36 @@
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootstrap/scss/mixins';
+@import '../node_modules/bootstrap/scss/variables';
+@import '../node_modules/bootstrap/scss/reboot';
+@import '../node_modules/bootstrap/scss/utilities/sizing';
+@import '../node_modules/bootstrap/scss/utilities/spacing';
+@import '../node_modules/bootstrap/scss/print';
+@import './variables';
+@import './layout';
+@import './header';
+@import './sidebar';
+@import './candidate';
+
+html {
+  font-size: 15px;
+}
+
+body {
+  font-family: 'Rubik', 'Roboto', sans-serif, $font-family-base;
+}
+
+@media print {
+  @page {
+    margin: 0mm !important;
+  }
+  html {
+    font-size: 11px !important;
+    table {
+      border-collapse: collapse !important;
+      & th,
+      & td {
+        border: 1px solid rgba($color: #000000, $alpha: .1);
+      }
+    }
+  }
+}

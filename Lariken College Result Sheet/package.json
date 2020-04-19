@@ -1,0 +1,26 @@
+{
+  "name": "lariken-college",
+  "version": "1.0.0",
+  "description": "Private",
+  "main": "index.js",
+  "scripts": {
+    "css-build": "npm-run-all sass postcss css-minify",
+    "postcss": "postcss --config ./postcss.config.js --replace css/taidob.css",
+    "sass": "node-sass scss/ -o css/ --source-map true source-map-contents true --output-style expanded --precision 6",
+    "sass-watch": "node-sass scss/ -o css/ --source-map true source-map-contents true --output-style expanded --precision 6 --watch",
+    "css-minify": "cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output css/taidob.min.css css/taidob.css"
+  },
+  "author": "Taidob",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^9.7.5",
+    "bootstrap": "^4.4.1",
+    "clean-css-cli": "^4.3.0",
+    "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.0",
+    "prettier": "^2.0.4"
+  },
+  "dependencies": {}
+}

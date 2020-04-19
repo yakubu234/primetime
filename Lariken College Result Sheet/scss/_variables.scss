@@ -1,0 +1,21 @@
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$diff: .02px;
+
+$fg: #000000;
+$fg-alt: #444444;
+$bg: darken($white, 10);
+$bg-alt: $white;
+$theme: purple;
+$bd-rd: 10px;
+$bd-rd-tl: $bd-rd 0 0 0;
+$bd-rd-tr: 0 $bd-rd 0 0;
+$bd-rd-tlr: $bd-rd $bd-rd 0 0;
+$bd-rd-bl: 0 0 0 $bd-rd;
+$bd-rd-br: 0 0 $bd-rd 0;
+$bd-rd-blr: 0 0 $bd-rd $bd-rd;
+$bd-rd-trbr: 0 $bd-rd $bd-rd 0;
+$bd-rd-tlbl: $bd-rd 0 0 $bd-rd;

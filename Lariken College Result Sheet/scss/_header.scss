@@ -1,0 +1,36 @@
+%heading {
+  font-size: 1.62rem;
+  margin: 0;
+}
+
+.header {
+  padding: 3rem 4.5rem 1rem;
+  @media (min-width: $xl) {
+    padding-left: 7.5rem;
+  }
+  background-color: $bg-alt;
+  position: relative;
+  header {
+    h1 {
+      @extend %heading;
+      color: darken($color: $white, $amount: 30);
+    }
+    h3 {
+      @extend %heading;
+      color: lighten($color: $black, $amount: 20);
+    }
+    .avatar {
+      position: absolute;
+      right: 4.5rem;
+      top: 2.5rem;
+      border-radius: 50%;
+      padding: .3rem;
+      background-color: $white;
+      & > .avatar-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+      }
+    }
+  }
+}

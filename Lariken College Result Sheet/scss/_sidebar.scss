@@ -1,0 +1,55 @@
+%common-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar {
+  width: 270px;
+  flex-shrink: 0;
+  background-color: $theme;
+  height: 100vh;
+  padding: 2rem;
+  @extend %common-flex;
+
+  .favicon {
+    @extend %common-flex;
+    .favicon-img {
+      width: 170px;
+      &:last-of-type {
+        display: none;
+      }
+      @media print {
+        &:first-of-type {
+          display: none;
+        }
+        &:last-of-type {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .footer {
+    margin-bottom: 2rem;
+    margin-top: auto;
+    .group {
+      color: $white;
+      p {
+        color: #f3bbf3;
+        margin-bottom: 0;
+        font-weight: 600;
+      }
+      a {
+        word-break: break-all;
+        color: #f3bbf3;
+        text-decoration: underline dotted;
+      }
+    }
+  }
+  @media print {
+    * {
+      color: $black !important;
+    }
+  }
+}

@@ -1,0 +1,69 @@
+.candidate-info {
+  margin: 7rem auto;
+  padding: 0 4.5rem;
+  @media (min-width: $xl) {
+    padding: 0 7.5rem;
+  }
+  max-width: 100%;
+
+  table tr td:first-of-type {
+    width: 50% !important;
+  }
+
+  .result {
+    table {
+      width: 100%;
+      tbody tr {
+        td {
+          font-size: 1.5em;
+          font-weight: 600;
+          padding: 0.2rem 1rem;
+          &:first-of-type span {
+            color: $fg-alt;
+          }
+          &:last-of-type {
+            color: #187718;
+            color: darken(purple, 15);
+          }
+        }
+      }
+    }
+  }
+
+  .data {
+    box-shadow: 0 0.2rem 0.419rem rgba($color: $black, $alpha: 0.2);
+    border-radius: $bd-rd;
+    &:not(:last-of-type) {
+      margin-bottom: 2.5rem;
+    }
+    .table-head {
+      padding: 0.2rem 1rem;
+      border-radius: $bd-rd-tlr;
+      background-color: $theme;
+      color: $white;
+      width: 100%;
+      font-weight: 600;
+    }
+
+    table {
+      background-color: $white;
+      border-radius: $bd-rd-blr;
+      position: relative;
+      width: 100%;
+      border-collapse: collapse;
+
+      tbody {
+        tr {
+          border-top: 1px solid rgba($color: $black, $alpha: 0.1);
+          td {
+            // &:first-of-type {
+            //   border-right: 1px solid rgba($color: $black, $alpha: 0.2);
+            // }
+            color: $fg-alt;
+            padding: 0.2rem 1rem;
+          }
+        }
+      }
+    }
+  }
+}
