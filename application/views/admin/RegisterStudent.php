@@ -63,13 +63,22 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group col-sm-6">
+                                        <div class="form-group col-sm-4">
                                             <label>MiddleName</label>
                                             <div>
                                                 <input data-parsley-type="alphanum" type="text"
                                                     class="form-control" required name="middlename"
                                                         placeholder=" Enter Middle Name"/>
                                             </div>
+                                        </div>
+                                        <div class="form-group col-sm-2">
+                                            <label class="control-label">Gender</label>
+                                            <select class="form-control select2" required name="gender">
+                                                <option selected="" disabled="" >Select</option>
+                                                <option value="Male" >Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            
                                         </div>
                                  </div>
                                  <div class="row">

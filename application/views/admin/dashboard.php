@@ -93,7 +93,7 @@
                                     <!-- <p class="text-muted m-b-30">This is an experimental awesome solution for responsive tables with complex data.</p> -->
     
                                     
-                                            <table id="datatable" class="table table-bordered dt-responsive">
+                                            <table id="datatable" class="table table-bordered">
                                                 <thead>
                                                 <tr>
                                                     <th>S/N</th>

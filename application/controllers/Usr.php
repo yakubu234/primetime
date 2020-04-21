@@ -110,6 +110,17 @@ function __construct(){
 		}
 	}
 
+  public function Result_Page_Display_controller(){
+      $id = $this->uri->segment(3);
+      $eid = $this->uri->segment(4);
+      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.id = '$id'";
+           $query = $this->db->query($query);
+           $usage['StudentResult'] =  $query->result();
+          $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$eid))->result();
+          $this->session->set_userdata('success','You are viewing BroadSheet Result of a Particular Exam');
+          $this->load->view('admin/resultPage',$usage); 
+  }
+
 	public function Add_Question(){
 		if($this->input->post()){
 			$eid = $this->input->post('qid');
@@ -406,13 +417,21 @@ function __construct(){
     $this->upload->initialize($config);
     if($this->upload->do_upload('file')){
       $uploadData = $this->upload->data();
-      $tmp_name = 'Student_Pic/' . $uploadData['file_name']; 
+      $tmp_name = 'Student_Pic/' . $uploadData['file_name'];
+      $this->form_validation->set_rules('Reg', 'Reg Number', 'required|valid_email[student.reg_num]');
+      if ($this->form_validation->run() == FALSE) {
+      $this->session->set_flashdata('errors', validation_errors());
+      $this->load->view('includes/header');
+      $this->load->view('admin/RegisterStudent');
+      $this->load->view('includes/footer');
+    } else { 
       $data = array(
       		'surname' =>ucwords(strtolower($this->input->post('surname'))),
       		'firstname' =>$this->input->post('firstname'),
       		'middlename' =>$this->input->post('middlename'),
       		'reg_num' =>$this->input->post('Reg'),
       		'phone' =>$this->input->post('phone'),
+          'gender' =>$this->input->post('gender'),
       		'img' =>$uploadData['file_name'],
     		);
        $res = $this->db->insert('student',$data);
@@ -427,6 +446,7 @@ function __construct(){
 		$this->load->view('admin/RegisterStudent');
 		$this->load->view('includes/footer');
        }
+     }
 			}else{
 		$this->session->set_userdata('errors','Image has not been Uploaded please Upload again');
 		$this->load->view('includes/header');
@@ -470,8 +490,9 @@ function __construct(){
               $insert_csv['firstname'] = $csv_line[1];
               $insert_csv['middlename'] = $csv_line[2];
               $insert_csv['reg_num'] = $csv_line[3];
-              $insert_csv['phone'] = $csv_line[4];
-              $insert_csv['image'] = $csv_line[5];
+              $insert_csv['gender'] = $csv_line[4];
+              $insert_csv['phone'] = $csv_line[5];
+              $insert_csv['image'] = $csv_line[6];
 
             }
             $i++;
@@ -480,6 +501,7 @@ function __construct(){
               'firstname' => $insert_csv['firstname'],
               'middlename' => $insert_csv['middlename'],
               'reg_num' => $insert_csv['reg_num'],
+              'gender' => $insert_csv['gender'],
               'phone' => $insert_csv['phone'],
               'img' => $insert_csv['image']
             );    
@@ -595,7 +617,7 @@ function __construct(){
     if ($this->input->post()) {
           $exam = $this->input->post('exam');
           $mode = $this->input->post('mode');
-           $query = "SELECT exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$exam'";
+           $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$exam'";
            $query = $this->db->query($query);
            $usage['StudentResult'] =  $query->result();
           $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$exam))->result();

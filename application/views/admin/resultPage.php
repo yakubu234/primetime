@@ -10,8 +10,8 @@
       as="style"
       href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700&display=swap"
     />
-    <link rel="stylesheet" href="<?php echo base_url(); ?>css/taidob.min.css" />
-    <link rel="stylesheet" href="<?php echo base_url(); ?>css/taidob.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>printDesign/css/taidob.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>printDesign/css/taidob.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700&display=swap"
       rel="stylesheet"

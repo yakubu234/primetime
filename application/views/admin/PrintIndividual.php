@@ -103,9 +103,9 @@
                                 
                             <div class="card m-b-20">
                                 <div class="card-body">
-                                    <!-- <button id="btnPrint"  type="button" class=" hidden-print btn btn-primary waves-effect waves-light" data-toggle="button" aria-pressed="false"><i class="ion-printer"></i></button> -->
+                                    <button id="btnPrint"  type="button" class=" hidden-print btn btn-primary waves-effect waves-light" data-toggle="button" aria-pressed="false"><i class="ion-printer"></i></button>
         <div class="ticket" >
-                                    <h4 class="mt-0 header-title" style="text-align: center;">Print Individual Result of <?=$examname?> Lariken College Print Date : <?=date("Y-m-d h:i:sa")?></h4>
+                                    <h4 class="mt-0 header-title" style="text-align: center;">Individual Result of <?=$examname?> Lariken College &nbsp;&nbsp;&nbsp;Print Date : (<?=date("Y-m-d h:i:sa")?>)</h4>
                                     <!-- <p class="text-muted m-b-30">This is an experimental awesome solution for responsive tables with complex data.</p> -->
     
                                     
@@ -121,7 +121,7 @@
                                                     <th>Theory Score</th>
                                                     <th>Grade (%)</th>
                                                     <th>Remarks</th>
-                                                    <th></th>
+                                                    <th>&nbsp;&nbsp;</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -129,18 +129,17 @@
                                                      
                                                     foreach($StudentResult as $key => $val){
                                                         $score = $val->score;
-                                                     if (empty($score)) {
+                                                     if ($score <= 0) {
                                                          $score = 0;
                                                      }
                                                         $totalCbtQuestion = $val->totalQuestion;
                                                         $total = $totalCbtQuestion + 30;
-                                                        if(!empty($score) && !empty($val->theory)){
-                                                        $per = round(((($val->theory+$score)*100)/$total),1);
-                                                    }else if(!empty($score)){
+                                                        $theory = $val->theory;
+                                                        if($score >= 0 && $theory !=""){
+                                                        $per = round(((($theory+$score)*100)/$total),1);
+                                                    }else if($score >= 0){
                                                     $per = round((($score*100)/$totalCbtQuestion),1);
-                                                    }else{
-                                                        $per = "0";
-                                                    }
+                                                    }                          
                                                echo ' <tr>
                                                     <th>'.(1+$key).'</th>
                                                     <th>'.$val->reg_num.' </th>
@@ -148,7 +147,7 @@
                                                     <td>'.$val->correct.'</td>
                                                     <td>'.$val->wrong.'</td>
                                                     <td>'.$score.'</td>
-                                                    <td>'.$val->theory.'</td>
+                                                    <td>'.$theory.'</td>
                                                     <td>'.$per.'&nbsp;%</td>
                                                     <td>';if ($per >= $div) {
                                                         $rem = "Passed";
@@ -156,11 +155,10 @@
                                                         $rem = "Failed";
                                                       }
                                                     echo $rem.'</td>
-                                                    <td><a tarhet="_blank" href=" '.base_url().'Welcome/JumpQuestion_Exam/' . $val->reg_num . '/' . $val->eid . '/' . rand() . '/ioee20304592knsmcklako" ><button  type="button" class=" hidden-print btn btn-primary waves-effect waves-light" data-toggle="button" aria-pressed="false"><i class="ion-printer"></i></button></a></td>
+                                                    <td><a target="_blank" href=" '.base_url().'Usr/Result_Page_Display_controller/' . $val->id . '/' . $val->eid . '/' . rand() . '/ioee20304592knsmcklako" ><button class=" hidden-print btn btn-primary waves-effect waves-light"><i class="ion-printer"></i></button></a></td>
                                                 </tr>';
                                                 } 
-                                            // }
-
+                                            
                                              ?>                                         
                                                 
                                                 </tbody>
@@ -183,6 +181,3 @@ $btnPrint.addEventListener("click", () => {
     window.print();
 });
 </script>
-
-        <!-- Footer -->
-      

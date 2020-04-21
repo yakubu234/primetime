@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2020 at 05:31 AM
+-- Generation Time: Apr 21, 2020 at 02:24 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -106,8 +106,8 @@ CREATE TABLE `exam_ready` (
 
 INSERT INTO `exam_ready` (`id`, `reg_num`, `name`, `eid`, `exam_name`, `scoreObtainable`, `totalQuestion`, `duration`, `theory`, `score`, `correct`, `wrong`, `WrongScore`, `time_remaining`, `status`, `startDate`, `endDate`) VALUES
 (8, '2020/230', 'adelaja gabriel oluwatosin2020/30', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '4', '0', '1587396838', 'Ongoing', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
-(15, '20/2016', 'Sunday osunbo osunbo solademi', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '0', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
-(16, '21/2016', 'john ogbu adewale', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11');
+(15, '20/2016', 'Sunday osunbo osunbo solademi', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '20', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
+(16, '21/2016', 'john ogbu adewale', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '13', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11');
 
 -- --------------------------------------------------------
 
@@ -160,6 +160,7 @@ CREATE TABLE `student` (
   `firstname` varchar(200) NOT NULL,
   `middlename` varchar(200) NOT NULL,
   `reg_num` varchar(200) NOT NULL,
+  `gender` varchar(200) NOT NULL,
   `phone` varchar(200) NOT NULL,
   `img` varchar(2000) NOT NULL,
   `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -169,10 +170,10 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`id`, `surname`, `firstname`, `middlename`, `reg_num`, `phone`, `img`, `time`) VALUES
-(65, 'Sunday osunbo', 'osunbo', 'solademi', '20/2016', '08030960928', 'done.jpg', '2020-04-16 17:15:25'),
-(66, 'john', 'ogbu', 'adewale', '21/2016', '09090293023', 'dummy.png', '2020-04-16 17:15:25'),
-(67, 'adelaja', 'gabriel', 'oluwatosin2020/30', '2020/230', '8030980987', 'adewale.png', '2020-04-16 17:15:25');
+INSERT INTO `student` (`id`, `surname`, `firstname`, `middlename`, `reg_num`, `gender`, `phone`, `img`, `time`) VALUES
+(65, 'Sunday osunbo', 'osunbo', 'solademi', '20/2016', '', '08030960928', 'done.jpg', '2020-04-16 17:15:25'),
+(66, 'john', 'ogbu', 'adewale', '21/2016', '', '09090293023', 'dummy.png', '2020-04-16 17:15:25'),
+(67, 'adelaja', 'gabriel', 'oluwatosin2020/30', '2020/230', '', '8030980987', 'adewale.png', '2020-04-16 17:15:25');
 
 -- --------------------------------------------------------
 
@@ -205,11 +206,7 @@ INSERT INTO `student_history` (`id`, `eid`, `qns`, `qid`, `reg_num`, `user_answe
 (23, '5e950dcf42c62', '', '5e951fe4c3063', '2020/230', '', '5e951fe4c3064', '5e951fe4c3065', '', 'mathematics', '5e951fe4c3064', '9', '1', '2020-04-20 01:09:08'),
 (24, '5e950dcf42c62', '', '5e951fe4c3053', '2020/230', '', '5e951fe4c3059', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3059', '8', '2', '2020-04-20 01:09:08'),
 (25, '5e950dcf42c62', '', '5e951f163f2a4', '2020/230', '', '5e951f163f2a9', '5e951f163f2a8', '', 'mathematics', '5e951f163f2a9', '6', '3', '2020-04-20 01:09:08'),
-(26, '5e950dcf42c62', '', '5e951f163f2ba', '2020/230', '', '5e951f163f2bc', '5e951f163f2bd', '', 'mathematics', '5e951f163f2bc', '7', '4', '2020-04-20 01:09:08'),
-(179, '', '', '5e951fe4c3063', '', '', '5e951fe4c3064', '5e951fe4c3065', '', 'mathematics', '5e951fe4c3064', '9', '1', '2020-04-20 11:48:23'),
-(180, '', '', '5e951fe4c3053', '', '', '5e951fe4c3059', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3059', '8', '2', '2020-04-20 11:48:23'),
-(181, '', '', '5e951f163f2a4', '', '', '5e951f163f2a9', '5e951f163f2a8', '', 'mathematics', '5e951f163f2a9', '6', '3', '2020-04-20 11:48:23'),
-(182, '', '', '5e951f163f2ba', '', '', '5e951f163f2bc', '5e951f163f2bd', '', 'mathematics', '5e951f163f2bc', '7', '4', '2020-04-20 11:48:23');
+(26, '5e950dcf42c62', '', '5e951f163f2ba', '2020/230', '', '5e951f163f2bc', '5e951f163f2bd', '', 'mathematics', '5e951f163f2bc', '7', '4', '2020-04-20 01:09:08');
 
 -- --------------------------------------------------------
 

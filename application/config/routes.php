@@ -53,6 +53,7 @@ $route['default_controller'] = 'Usr';
 $route['Fpass'] = 'Usr/forgotpass';
 $route['Login'] = 'Usr/Admin';
 $route['Dashboard_Display'] = 'Usr/Dashboard';
+$route['Result_Page_Display'] = 'Usr/Result_Page_Display_controller';
 $route['Create_Exam'] = 'Usr/CreateExam';
 $route['You_Are_Adding_Question'] = 'Usr/Add_Question';
 $route['Jump_Admin_delete/(:any)'] = 'Usr/JumpQuestion_Admin_delete';
