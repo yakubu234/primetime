@@ -64,7 +64,8 @@ function __construct(){
    		$this->form_validation->set_rules('demo0', 'Right answer Score', 'required');
    		$this->form_validation->set_rules('demo3', 'Wrong answer Score', 'required');
    		$this->form_validation->set_rules('start', 'start date ', 'required');
-   		$this->form_validation->set_rules('end', 'end date', 'required');
+   		$this->form_validation->set_rules('demo1', 'Pass Mark', 'required');
+      $this->form_validation->set_rules('end', 'end date', 'required');
    		$this->form_validation->set_rules('demo3_22', 'Duration of exam in minutes', 'required');
    		 if ($this->form_validation->run() == FALSE) {
             // set the validation errors in flashdata (one time session)
@@ -78,6 +79,7 @@ function __construct(){
       		'title' =>ucwords(strtolower($this->input->post('title'))),
       		'total' =>$this->input->post('total'),
       		'correct' =>$this->input->post('demo0'),
+          'passmark' =>$this->input->post('demo1'),
       		'wrong' =>$this->input->post('demo3'),
       		'start' =>$this->input->post('start'),
       		'end' =>$this->input->post('end'),
@@ -266,22 +268,6 @@ function __construct(){
             'correctId'=>$ansid,
             'sn'=>$serial+$i,
             );
-            //   $data[] = array(
-            // 'eid'=>$eid,
-            // 'question'=>htmlentities(htmlentities(addslashes($this->input->post('question')[$i]), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'),
-            // 'qid'=>$qid,
-            // 'optionA'=>htmlentities(htmlentities(addslashes($this->input->post('optionA')[$i]), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'),
-            // 'optAid'=>$oaid,
-            // 'optionB'=>htmlentities(htmlentities(addslashes($this->input->post('optionB')[$i]), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'),
-            // 'optBid'=>$obid,
-            // 'optionC'=>htmlentities(htmlentities(addslashes($this->input->post('optionC')[$i]), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'),
-            // 'optCid'=>$ocid,
-            // 'optionD'=>htmlentities(htmlentities(addslashes($this->input->post('optionD')[$i]), ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'),
-            // 'optDid'=>$odid,
-            // 'correct'=>$this->input->post('answer')[$i],
-            // 'correctId'=>$ansid,
-            // 'sn'=>$serial+$i,
-            // );
 		 }
 		 $res = $this->db->insert_batch('question', $data);
 		 if ($res == true) {
@@ -319,46 +305,51 @@ function __construct(){
 			$eid = $this->input->post('exam');
 			$get = $this->db->get_where('exam',array('eid'=>$eid))->row();
         	$duration = $get->time;
+          $title = $get->title;
         	$TotalMarks = ($get->total * $get->correct);
         	$TotalQuestion = $get->total;
           $startDate = $get->start;
+          $wrong = $get->wrong;
           $endDate = $get->end;
 			$data = array();
-		 $count = count($this->input->post('validate'));
+		 $count = $this->input->post('Total_number');
 		 for($i=0; $i<$count; $i++) {           
-		    $data = array(
-            'reg_num'=>$this->input->post('id')[$i],
+		    $data[] = array(
+            'reg_num'=>$this->input->post('validate')[$i],
             'name'=>$this->input->post('name')[$i],
             'eid'=>$this->input->post('exam'),
-            'exam_name'=>$this->input->post('Exam_name'),
+            'exam_name'=>$title,
             'duration'=>$duration,
             'totalQuestion'=>$TotalQuestion,
             'scoreObtainable'=>$TotalMarks,
             'startDate'=>$startDate,
             'endDate'=>$endDate,
+            'score'=>'0',
+            'correct'=>'0',
+            'wrong'=>'0',
+            'WrongScore'=>$wrong,
             );
-		 }
-		 // $res = $this->db->insert_batch('exam_ready', $data);
-		 $this->db->from('exam_ready');
-        $this->db->where('reg_num', $data['reg_num']); 
-        $this->db->where('eid', $data['eid']); 
-        $query = $this->db->get();
-        if($query->num_rows() != 0){
-           $res = true;  
-        }else{
-           $res = $this->db->insert('exam_ready',$data);
-        }
-		 if ($res == true) {
-		 	$this->session->set_flashdata('success', 'Exam Question has been Added to Database');
-		 	$this->ShowStudent_Availabe_for_Specific_Exam($eid);
-		 }else{
-		 	$query = $this->db->get('student');
-		$usage['student'] =  $query->result_array();
-		$this->session->set_userdata('errors','Adding Students Failed');
-		$this->load->view('includes/header');
-		$this->load->view('admin/Student_For_Exam',$usage);
-		$this->load->view('includes/footer');
-		 }
+		 } 
+     $key = 'reg_num';
+     $array = $data;
+     $result = $this->removeElementWithValue($array,$key,$eid);
+     if (empty($result)) {
+         $this->session->set_flashdata('success', 'Student has been Added to Database before');
+      $this->ShowStudent_Availabe_for_Specific_Exam($eid);
+     }else{
+      $res = $this->db->insert_batch('exam_ready',$result);
+      if ($res == true) {
+      $this->session->set_flashdata('success', 'Student has been Added to Database');
+      $this->ShowStudent_Availabe_for_Specific_Exam($eid);
+     }else{
+      $query = $this->db->get('student');
+    $usage['student'] =  $query->result_array();
+    $this->session->set_userdata('errors','Adding Students Failed');
+    $this->load->view('includes/header');
+    $this->load->view('admin/Student_For_Exam',$usage);
+    $this->load->view('includes/footer');
+     }
+     }		 
 		 }
 		}else{
 		$query = $this->db->get('student');
@@ -369,6 +360,20 @@ function __construct(){
 		$this->load->view('includes/footer');
 		}
 	}
+
+  function removeElementWithValue($array, $key,$eid ){
+    $q ="SELECT * FROM exam_ready  WHERE eid='$eid'";
+                                     $query = $this->db->query($q);
+                                     foreach ($query->result_array() as $newkey => $row) {
+     foreach($array as $subKey => $subArray){
+       
+          if($subArray[$key] == $row['reg_num']){
+               unset($array[$subKey]);
+          }
+        }
+     }
+     return $array;
+}
 
 	public function ShowStudent_Availabe_for_Specific_Exam($eid){
 		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
@@ -381,7 +386,7 @@ function __construct(){
 	public function ShowStudent_Availabe_for_Specific_Exam_show(){
 		if ($this->input->post()) {
 			$eid = $this->input->post('exam');
-		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result_array();
+		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
 		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student_For_Exam_specific',$usage);
@@ -511,12 +516,113 @@ function __construct(){
 			$this->load->view('includes/footer');
 	}
 
+  public function LockScreen(){
+    if ($this->input->post()) {
+        $this->load->view('admin/lockScreeen');
+      $this->load->view('includes/footer');
+    }else{
+        $this->load->view('admin/lockScreeen');
+      $this->load->view('includes/footer');      
+    }
+  }
+
+  public function Update_Exam_to_Enable_Controler(){
+      $eid = $this->input->post('eid');
+      $total = $this->input->post('total');
+      $radioValue = $this->input->post('switch_one');
+      if ($radioValue == "disable") {
+          $data = array(
+          'status' =>'',
+              );
+          $this->db->where('eid', $eid);
+          $res = $this->db->update('exam', $data);
+           $this->session->set_flashdata('success', 'Exam as been Disabled, Hence Student cannot have Access to this Exam');
+          redirect(base_url('Dashboard_Display'));
+      }else{
+        $get = $this->db->get_where('question',array('eid'=>$eid))->num_rows();
+        if ($get >= $total) {
+          # code...
+           $data = array(
+          'status' =>'Enable',
+              );
+          $this->db->where('eid', $eid);
+          $res = $this->db->update('exam', $data);
+           $this->session->set_flashdata('success', 'Exam as been Enabled, Hence Student can have Access to it during the timeframe');
+          redirect(base_url('Dashboard_Display'));
+        }else{
+           $this->session->set_flashdata('errors', 'You cannot enable exam when question is not up to total question expected. Please Add more question');
+           redirect(base_url('Dashboard_Display'));
+        }
+      }
+  }
+
 	public function checkexist($table,$where){
 		$this->db->select('*');
 		$this->db->select($table);
 		$this->db->where($where);
 		return $this->db->get()->result_array();
 	}
+
+  public function Add_admin_now_function(){
+    if ($this->input->post()) {
+          $fullname = $this->input->post('name');
+          $email = $this->input->post('email');
+          $username = $this->input->post('username');
+          $password = $this->input->post('password');
+          $data = array(
+            'name' =>$fullname, 
+            'email' =>$email, 
+            'username' =>$username, 
+            'password' =>$password, 
+          );
+          $insert = $this->db->insert('admin',$data);
+          $usage['admin'] =  $this->db->get_where('admin')->result();
+          $this->session->set_userdata('success','New Admin has just been created');
+          $this->load->view('includes/header');
+          $this->load->view('admin/admin_page',$usage);
+          $this->load->view('includes/footer');
+    }else{
+      $usage['admin'] =  $this->db->get_where('admin')->result();
+          $this->session->set_userdata('success','You are viewing admin');
+          $this->load->view('includes/header');
+          $this->load->view('admin/admin_page',$usage);
+          $this->load->view('includes/footer'); 
+    }
+  }
+
+
+  public function BroadSheet_result_now_function(){
+    if ($this->input->post()) {
+          $exam = $this->input->post('exam');
+          $mode = $this->input->post('mode');
+           $query = "SELECT exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$exam'";
+           $query = $this->db->query($query);
+           $usage['StudentResult'] =  $query->result();
+          $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$exam))->result();
+          if ($mode == "BroadSheet") {
+          $this->session->set_userdata('success','You are viewing BroadSheet Result of a Particular Exam');
+          $this->load->view('includes/header');
+          $this->load->view('admin/BroadSheet',$usage);
+          $this->load->view('includes/footer');
+          }else{
+             $this->session->set_userdata('success','You are viewing Individuals Result of a Particular Exam');
+          $this->load->view('includes/header');
+          $this->load->view('admin/PrintIndividual',$usage);
+          $this->load->view('includes/footer');
+          }
+    }else{
+      $usage['admin'] =  $this->db->get_where('admin')->result();
+          $this->session->set_userdata('success','You are viewing admin');
+          $this->load->view('includes/header');
+          $this->load->view('admin/admin_page',$usage);
+          $this->load->view('includes/footer'); 
+    }
+  }
+
+  public function JumpQuestion_Admin_delete($eid,$sn){
+            $id = $this->uri->segment(3);
+            $sn = $this->uri->segment(4);
+          }
 
 	public function logout(){
       // $this->session->session_unset();

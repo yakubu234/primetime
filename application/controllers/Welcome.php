@@ -144,67 +144,59 @@ function __construct(){
               $this->session->set_userdata('sn',$sn);
               $this->session->set_userdata('eid',$id);
               $this->session->set_userdata('reg_num',$reg_num);
-              $this->getrandom_with_constraint();
+              $this->load->view('student/Header');
+              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/footer');
 
       }
 
     public function save_answer_selected_now(){
-     $subject = $this->input->post('subject');
-     $total = $this->input->post('total');
-     $sn = $this->input->post('current');
-     $qid = $this->input->post('qid');
-     $qid_sn = $this->input->post('qid_sn');
-     $correct = $this->input->post('correct');
-     $student_ans = $this->input->post('ans');
-     $reg_num = $this->session->userdata('reg_num');
-     $Duration = $this->session->userdata('duration');
-     $eid = $this->session->userdata('eid');
-     $name_of_table = 'question';
-     // get the view to save in hisory
-     $User_View = $this->_getReal_view($eid,$qid,$name_of_table,$student_ans);
-     // view getting ended
-     $correctId = $User_View["correct_view_id"];
-     $data = array(
-          'eid' => $eid,
-          'qns' => $User_View["qView"],
-          'qid' => $qid,
-          'reg_num' => $reg_num,
-          'user_answer' => $User_View["user_view"],
-          'user_answer_id' =>$student_ans,
-          'correct' =>$User_View["correct_view_id"],
-          'correct_view' =>$User_View["correctView"],
-          'subject' =>$subject,
-          'qid_sn' =>$qid_sn,
-          'sn' =>$sn,
-        );
-     $timeRemaining = $this->session->userdata('time_remaining');
-     $where = array('eid'=>$eid,'qid' => $qid,'reg_num' => $reg_num);
-     $table = 'student_history';
-     $res = $this->_checkexist($table,$where);
-     // var_dump($res);
-     if ($res === false) {
-        $user_answer_id_existing = "none";
+    $count = $this->input->post('total');
+    $serial = 1;
+    for($i=0; $i<$count; $i++) {
+      $data[] = array(
+            'qid'=>$this->input->post('qid')[$i],
+            'qid_sn'=>$this->input->post('qid_sn')[$i],
+            'sn'=>$this->input->post('current')[$i],
+            'subject'=>$this->input->post('subject')[$i],
+            'correct_id'=>$this->input->post('correct')[$i],
+            'ans'=>$this->input->post('ans')[$i],
+            'user_answer_id'=>$this->input->post('ans')[$i],
+            'reg_num'=>$this->session->userdata('reg_num'),
+            'eid'=>$this->session->userdata('eid'), 
+            );
+    }
+    $key = 'reg_num';
+    $array = $data;
+    $eid = $this->session->userdata('eid');$reg_num = $this->session->userdata('reg_num');
+     $result = $this->removeElementWithValue($array,$key,$eid,$reg_num);
+      $get_count_return = $this->_getReal_right_wrong_user_answer($eid,$data);
+     $get_count_return_correct = $get_count_return['correct_count'];
+     $get_count_return_wrong = $get_count_return['wrong_count'];
+     if (empty($result)) {
+         $this->session->set_flashdata('success', 'Exam has been submitted before');
+       $this->load->view('student/Header');
+              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/footer');
      }else{
-     $user_answer_id_existing = $res['user_answer_id'];
-     }
-     $remaining = (($Duration * 60) - ((time() - $timeRemaining)));
-     if ($remaining > 0 ) {
-        $result = $this->_Dump_Information_($user_answer_id_existing,$data,$eid,$reg_num,$student_ans,$correctId,$qid);
+      $result = $this->_Dump_Information_($result,$eid,$reg_num,$get_count_return_correct,$get_count_return_wrong);
         if ($result) {
-          $sn = $sn+1;
-          if ($sn > $total) {
-            # code... that means the total is meet
-          }else{
-              $this->session->set_userdata('time_remaining',$timeRemaining);
-              $this->session->set_userdata('duration',$Duration);
-              $this->session->set_userdata('Total_Number',$total);
-              $this->session->set_userdata('sn',$sn);
               $this->session->set_userdata('eid',$eid);
               $this->session->set_userdata('reg_num',$reg_num);
-              $this->getrandom_with_constraint();
-          }
-        }
+              $this->session->set_flashdata('errors', 'Incorrect Login Details.');
+              $this->load->view('student/Header');
+              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/footer');
+            }else{
+                 $this->session->set_userdata('eid',$eid);
+              $this->session->set_userdata('reg_num',$reg_num);
+              $this->session->set_flashdata('errors', 'Incorrect Login Details.');
+              $this->load->view('student/Header');
+              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/footer');
      }
+   }
+     
     }
 
 
@@ -231,121 +223,73 @@ function __construct(){
               return false;
         }
       }
-    function _getReal_view($eid,$qid,$name_of_table,$student_ans)
+    function _getReal_right_wrong_user_answer($eid,$data)
       {
-        $view = $this->db->get_where($name_of_table,array('eid'=>$eid,'qid' => $qid))->row();
-        $question_view = $view->question;
-        $correct_view = $view->correct;
-        $idA= $view->optAid;
-        $idB= $view->optBid;
-        $idC= $view->optCid;
-        $idD= $view->optDid;
-        switch ($correct_view) {
-                case 'a':
-                  $correct_view = $view->optionA;
-                  $correct_view_id = $idA;
-                  break;
-                case 'b':
-                  $correct_view = $view->optionB;
-                  $correct_view_id = $idB;
-                  break;
-                case 'c':
-                  $correct_view = $view->optionC;
-                  $correct_view_id = $idC;
-                  break;
-                case 'd':
-                  $correct_view = $view->optionD;
-                  $correct_view_id = $idD;
-                  break;
-            }
+        $i=1;
+         foreach ($data as $key => $value) {$ret[$i][$key] = $value;}$i++;
+                      $q ="SELECT * FROM question  WHERE eid='$eid'";
+                                     $query = $this->db->query($q);
+                                     foreach ($query->result_array() as $key => $row) {
+                      foreach($ret as $val){ 
+                                    if(is_array($val))
+                                    if(in_array($row['correctId'],array_column($val, 'ans'))){
+                                     $num_of_correct_ans[] = $row['id'];
+                                    } else{
+                                      $num_of_wrong_answers[] = $row['id'];
+                                    }
+                                  }
+                                }
 
-        switch ($student_ans) {
-                case $idA:
-                  $User_View = $view->optionA;
-                  break;
-                case $idB:
-                  $User_View = $view->optionB;
-                  break;
-                case $idC:
-                  $User_View = $view->optionC;
-                  break;
-                case $idD:
-                  $User_View = $view->optionD;
-                  break;
-            } 
+                                if( empty($num_of_correct_ans)) {
+                                    $num_of_correct_ans = 0 ;
+                                  }else{
+                                    $num_of_correct_ans = count($num_of_correct_ans);
+                                  }
 
-           $User_View = array('user_view'=>$User_View,'qView' => $question_view,'correctView' => $correct_view, 'correct_view_id'  => $correct_view_id);
-      if($User_View != " "){return $User_View;}else{return FALSE;}
-      }
+                                if( empty($num_of_wrong_answers)) {
+                                    $num_of_wrong_answers = 0 ;
+                                  }else{
+                                    $num_of_wrong_answers = count($num_of_wrong_answers);
+                                  }
+                                 
+                                 // $num_of_wrong_answers = count($num_of_wrong_answers);
+                               $Count_rsponse = array('correct_count'=>$num_of_correct_ans,'wrong_count' => $num_of_wrong_answers);
+                                 return $Count_rsponse;
+        }
 
-      function _Dump_Information_($user_answer_id_existing,$data,$eid,$reg_num,$student_ans,$correctId,$qid){
+      function _Dump_Information_($data,$eid,$reg_num,$get_count_return_correct,$get_count_return_wrong){
         $view = $this->db->get_where('exam_ready',array('eid'=>$eid,'reg_num' => $reg_num))->row();
          $scoreObtainable = $view->scoreObtainable;
          $totalQuestion = $view->totalQuestion;
          $mark = ( $scoreObtainable/$totalQuestion);
-         $totalQuestion = $view->totalQuestion;
-         $score = $view->score;
          $correctMarks = $view->correct;
          $wrongMarks = $view->wrong;
          $wrongScore = $view->WrongScore;
-         $now = time();
-        if ( $user_answer_id_existing == $student_ans) {
-         $data_exam_ready = array(
-          'status' => 'Ongoing',
-        );
-         $this->db->where('eid', $eid);
-          $this->db->where('reg_num', $reg_num);
-          $result = $this->db->update('exam_ready', $data_exam_ready);
-        }else if ($user_answer_id_existing == "none") {
-          if ($student_ans == $correctId) {            
           $data_exam_ready = array(
-          'score' => ($score+$mark),
-          'correct' => ($correctMarks+1),
-          'wrong' => $wrongMarks,
+          'score' => ($mark*$get_count_return_correct),
+          'correct' => ($get_count_return_correct),
+          'wrong' => $get_count_return_wrong,
+          'status' => 'Finished',
         );
-          }else{
-           $data_exam_ready = array(
-          'score' => ($score),
-          'correct' => ($correctMarks),
-          'wrong' => ($wrongMarks + 1),
-        );
-          }
-          $res = $this->db->insert('student_history', $data);
+          
+          $res = $this->db->insert_batch('student_history', $data);
           $this->db->where('eid', $eid);
           $this->db->where('reg_num', $reg_num);
           $result = $this->db->update('exam_ready', $data_exam_ready); 
-        }else if ($user_answer_id_existing != $student_ans && $student_ans == $correctId) {
-          $data_exam_ready = array(
-          'score' => ($score+$mark),
-          'correct' => ($correctMarks + 1),
-          'wrong' => ($wrongMarks - 1),
-        );
-          $this->db->where('eid', $eid);
-          $this->db->where('reg_num', $reg_num);
-          $this->db->where('qid', $qid);
-          $res = $this->db->update('student_history', $data);
-          $this->db->where('eid', $eid);
-          $this->db->where('reg_num', $reg_num);
-          $result = $this->db->update('exam_ready', $data_exam_ready);
-        }else if ($user_answer_id_existing != $student_ans && $student_ans != $correctId) {
-          if ($user_answer_id_existing == $correctId) { 
-             $data_exam_ready = array(
-          'score' => ($score - $mark),
-          'correct' => ($correctMarks - 1),
-          'wrong' => ($wrongMarks + 1),
-        );}else{
-            $data_exam_ready = array(
-          'status' => 'Ongoing',
-        );
-          }
-          $this->db->where('eid', $eid);
-          $this->db->where('reg_num', $reg_num);
-          $this->db->where('qid', $qid);
-          $res = $this->db->update('student_history', $data);
-          $this->db->where('eid', $eid);
-          $this->db->where('reg_num', $reg_num);
-          $result = $this->db->update('exam_ready', $data_exam_ready); 
-        }
         if($result){return $result;}else{return FALSE;}
       }
+
+      function removeElementWithValue($array, $key,$eid,$reg_num){
+    $q ="SELECT * FROM exam_ready  WHERE eid='$eid' AND reg_num = '$reg_num'";
+                                     $query = $this->db->query($q);
+                                     foreach ($query->result_array() as $newkey => $row) {
+     foreach($array as $subKey => $subArray){
+       
+          if($subArray[$key] == $row['reg_num']){
+               unset($array[$subKey]);
+          }
+        }
+     }
+     return $array;
+}
 }

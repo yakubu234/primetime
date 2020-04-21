@@ -12,11 +12,28 @@
             <div class="page-content-wrapper">
                 <div class="container-fluid">
                     <div class="row">
+                          <div class="col-sm-12" >
+                            
+                            <?php if ($this->session->flashdata('errors')) { ?>
+                              <div class="alert alert-primary">
+                                <?=$this->session->flashdata('errors'); ?>
+                              </div>
+                              
+                            <?php } ?>
+                            <!-- success -->
+                            <?php if ($this->session->flashdata('success')) { ?>
+                              <div class="alert alert-success">
+                                <?=$this->session->flashdata('success');?>
+                              </div>
+                              
+                            <?php } ?>
+                            
+                          </div>
                         <div class="col-12">
                             <div class="card m-b-20">
                                 <div class="card-body">
                                 <form method="POST" action="<?php echo base_url('Add_Student_To_Access_Specific_Exam') ?>">    
-                                     <div class="col-sm-12 m-b-20"><div class="row" ><h4 class="mt-0 header-title col-sm-6">Add Student to the Database</h4><span class="col-sm-5" style="float:right;">                <select class="form-control select2" name="exam" required="" id="DropSelect" onchange="styleselect()">
+                                     <div class="col-sm-12 m-b-20"><div class="row" ><h4 class="mt-0 header-title col-sm-6">Add Student to the Database</h4><span class="col-sm-5" style="float:right;">                <select class="form-control select2" name="exam" required="" >
                                     <option selected="" disabled="" >Choose Exam Title</option>
                                                 <?php
                                                 $get_data=$this->User_Model->get_table_data();
@@ -56,7 +73,7 @@
                                                echo ' <tr>
                                                     <td>'.$sn.'</td>
                                                     <td>
-                                                    <input type="hidden" name="id[]" value="'.$val["reg_num"].'"><input type="hidden" name="name[]" value="'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'"><input type="checkbox" name="validate[]" value="validated">
+                                                    <input type="hidden" name="id[]" value="'.$val["reg_num"].'"><input type="hidden" name="name[]" value="'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'"><input type="checkbox" name="validate[]" value="'.$val["reg_num"].'" id="add_nums" class="check_id" onclick="xxx()">
                             </td>
                                                     <td><img src="'.base_url().'Student_Pic/'.$val["img"].'" alt="" class="rounded" style="width: 70px;height:60px;"></td>
                                                     <td>'.$val["reg_num"].' </td>
@@ -75,6 +92,14 @@
                                              ?> 
                                         </tbody>
                                     </table>
+                                    <input type="hidden" value="" id="getSelected" name="Total_number">
+                                    <script type="text/javascript">
+                                     function xxx()
+                                        {
+                                          var zzz = $(".check_id:checked").length;
+                                          $("#getSelected").val(zzz);    
+                                        }
+                                    </script>
                                      <div class="form-group col-sm-6" >
                                             <div style="float:right;">
                                                 <button type="submit" class="btn btn-primary waves-effect waves-light">

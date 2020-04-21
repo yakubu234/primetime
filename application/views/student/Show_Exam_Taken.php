@@ -128,7 +128,7 @@
                                 <?php
                                   $q ="SELECT student_history.qid,student_history.sn, student_history.qid_sn, question.qid FROM student_history INNER JOIN question ON student_history.qid_sn = question.id WHERE student_history.eid='$eid' AND student_history.reg_num = '$reg_num'";
                                     $i=1;
-                                    $ret = array();  
+                                    // $ret = array();  
                                     $query = $this->db->query($q);
                                     if ($query->num_rows() > 0) {                 
                                     foreach ($query->result() as $key => $value) {

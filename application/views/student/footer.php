@@ -36,6 +36,10 @@
         <!-- Datatable init js -->
         <script src="<?php echo base_url(); ?>assets/pages/datatables.init.js"></script>
 
+         <!-- Sweet-Alert  -->
+        <script src="<?php echo base_url(); ?>plugins/sweet-alert2/sweetalert2.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/pages/sweet-alert.init.js"></script>
+
         <script src="<?php echo base_url(); ?>plugins/bootstrap-md-datetimepicker/js/moment-with-locales.min.js"></script>
         <script src="<?php echo base_url(); ?>plugins/bootstrap-md-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 

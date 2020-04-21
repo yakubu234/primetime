@@ -12,6 +12,23 @@
             <div class="page-content-wrapper">
                 <div class="container-fluid">
                     <div class="row">
+                          <div class="col-sm-12" >
+                            
+                            <?php if ($this->session->flashdata('errors')) { ?>
+                              <div class="alert alert-primary">
+                                <?=$this->session->flashdata('errors'); ?>
+                              </div>
+                              
+                            <?php } ?>
+                            <!-- success -->
+                            <?php if ($this->session->flashdata('success')) { ?>
+                              <div class="alert alert-success">
+                                <?=$this->session->flashdata('success');?>
+                              </div>
+                              
+                            <?php } ?>
+                            
+                          </div>
                         <div class="col-12">
                             <div class="card m-b-20">
                                 <div class="card-body">    

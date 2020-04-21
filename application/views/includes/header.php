@@ -10,13 +10,15 @@ $username = $this->session->userdata('username');
 <html lang="en">
 
     <head>
-        <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Agroxa - Responsive Bootstrap 4 Admin Dashboard</title>
-        <meta content="Admin Dashboard" name="description" />
-        <meta content="Themesbrand" name="author" />
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <title>Lariken College - Welcome to official site of Lariken College| no 1 school in Ibadanstate| top 5 school in nigeria|top 10 school in Oyo State|top ten school in nigeria|nigerian british standard curriculum|AOjf|Abayomi Oluwatosin Jiboku Foundation</title>
+          <meta name="description" content="Lariken College - Welcome to official site of Lariken College| no 1 school in Ibadanstate| top 5 school in nigeria|top 10 school in Oyo State|top ten school in nigeria|nigerian british standard curriculum|AOjf|Abayomi Oluwatosin Jiboku Foundation">
+          <meta name="keywords" content="Lariken College - Welcome to official site of Lariken College| no 1 school in Ibadanstate| top 5 school in nigeria|top 10 school in Oyo State|top ten school in nigeria|nigerian british standard curriculum|AOjf|Abayomi Oluwatosin Jiboku Foundation">
+          <meta name="Dc.title" content="Lariken College - Welcome to official site of Lariken College| no 1 school in Ibadanstate| top 5 school in nigeria|top 10 school in Oyo State|top ten school in nigeria|nigerian british standard curriculum|AOjf|Abayomi Oluwatosin Jiboku Foundation">
+          <meta name="robots" content="index, follow" />
+        <meta content="Yakubu Abiola" name="author" />
+        <link rel="shortcut icon" href="<?php echo base_url('logo/school_logo.png') ?>">
 
          <!-- DataTables -->
         <link href="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -26,6 +28,7 @@ $username = $this->session->userdata('username');
         <!-- Table css -->
         <link href="<?php echo base_url(); ?>plugins/RWD-Table-Patterns/dist/css/rwd-table.min.css" rel="stylesheet" type="text/css" media="screen">
          <!-- Plugins css -->
+         <link href="<?php echo base_url(); ?>assets/css/icons.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>plugins/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>plugins/summernote/summernote-bs4.css">
@@ -38,6 +41,11 @@ $username = $this->session->userdata('username');
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/css/icons.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" type="text/css">
+         <!-- jQuery  -->
+        <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/jquery.slimscroll.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/waves.min.js"></script>
 
     </head>
 
@@ -51,9 +59,9 @@ $username = $this->session->userdata('username');
                     <!-- Logo container-->
                     <div class="logo">
                         
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/logo-sm-light.png" alt="" class="logo-small">
-                            <img src="assets/images/logo-light.png" alt="" class="logo-large">
+                        <a href="<?php echo base_url('Dashboard_Display'); ?>" class="logo">
+                            <img src="<?php echo base_url('logo/school_logo.png') ?>" alt="" class="logo-small">
+                            <img src="<?php echo base_url('logo/school_logo.png') ?>" alt="" class="logo-large">
                         </a>
 
                     </div>
@@ -65,7 +73,7 @@ $username = $this->session->userdata('username');
 
                         <ul class="navbar-right d-flex list-inline float-right mb-0">           <li class="dropdown notification-list">
                                 <div class="dropdown notification-list">
-                                    <span><?php echo $username; ?></span>
+                                    <!-- <span></span> -->
                                     <a class="dropdown-toggle nav-link arrow-none waves-effect nav-user waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                         <span class="mdi mdi-account-circle" style="font-size:40px;color:white;" ></span>
                                         <!-- <img src="assets/images/users/user-4.jpg" alt="user" class="rounded-circle"> -->
@@ -73,7 +81,7 @@ $username = $this->session->userdata('username');
                                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                         <!-- item-->
                                         <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-lock-open-outline m-r-5"></i> Lock screen</a>
+                                        <a class="dropdown-item" href="<?php echo base_url('Unlock_LockScreen') ?>"><i class="mdi mdi-lock-open-outline m-r-5"></i> Lock screen</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power text-danger"></i> Logout</a>
                                     </div>                                                                    
@@ -135,7 +143,7 @@ $username = $this->session->userdata('username');
                             <li class="has-submenu">
                                 <a href="#"><i class="mdi mdi-account-circle"></i>Users</a>
                                 <ul class="submenu">
-                                    <li><a href="components-lightbox.html">Admin</a></li>
+                                    <li><a href="<?php echo base_url('Add_admin_now_'); ?>">Admin</a></li>
                                     <li><a href="<?php echo base_url('Show_Student_Registered');?>">Students</a></li>
                                     <li><a href="<?php echo base_url('Register_Student'); ?>">Register Student</a></li>
                                 </ul>
@@ -146,36 +154,15 @@ $username = $this->session->userdata('username');
                                 <ul class="submenu">
                                     <li><a href="<?php echo base_url('Create_Exam') ?>">Create New Exam</a></li>
                                     <li><a data-toggle="modal" data-target=".bs-example-modal-center">Add Question to old exam</a></li>
-                                    <li><a href="form-advanced.html">Form Advanced</a></li>
                                 </ul>
                             </li>
 
                             <li class="has-submenu">
-                                <a href="#"><i class="mdi mdi-delete"></i>Remove Exam</a>
-                                <ul class="submenu">
-                                    <li><a href="charts-chartist.html">Chartist Chart</a></li>
-                                    <li><a href="charts-chartjs.html">Chartjs Chart</a></li>
-                                    <li><a href="charts-flot.html">Flot Chart</a></li>
-                                    <li><a href="charts-c3.html">C3 Chart</a></li>
-                                    <li><a href="charts-morris.html">Morris Chart</a></li>
-                                    <li><a href="charts-other.html">Jquery Knob Chart</a></li>
-                                </ul>
+                                <a data-toggle="modal" data-target=".bs-example-modal-center-remove "><i class="mdi mdi-delete"></i>Remove Exam</a>
                             </li>
 
                             <li class="has-submenu">
-                                <a href="#"><i class="mdi mdi-google-pages"></i>Generate Result</a>
-                                <ul class="submenu megamenu">
-                                    <li>
-                                        <ul>
-                                            <li><a href="pages-login.html">Login</a></li>
-                                            <li><a href="pages-register.html">Register</a></li>
-                                            <li><a href="pages-recoverpw.html">Recover Password</a></li>
-                                            <li><a href="pages-lock-screen.html">Lock Screen</a></li>
-                                            <li><a href="pages-timeline.html">Timeline</a></li>
-                                            <li><a href="pages-invoice.html">Invoice</a></li>
-                                        </ul>
-                                    </li>                                    
-                                </ul>
+                                <a data-toggle="modal" data-target=".bs-example-modal-center-result"><i class="mdi mdi-google-pages"></i>Generate Result</a>
                             </li>
                         </ul>
                         <!-- End navigation menu -->
@@ -282,6 +269,97 @@ $username = $this->session->userdata('username');
                                             </div><!-- /.modal -->
         <!-- check student -->
 
+        <!-- delete Exam -->
+        <div class="modal fade bs-example-modal-center-remove" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Delete Particular Exam</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('View_Candidate_For_Exam_Search') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label class="control-label">Select Exam Title</label>
+                                            <select class="form-control select2" name="exam" required="">
+                                                <option selected="" disabled="" >Choose Exam Title</option>
+                                                <?php
+                                                $get_data=$this->User_Model->get_table_data();
+                                                    foreach($get_data as $val){
+                                              echo" <option value='".$val->eid."'>". $val->title."</option>";
+                                               } 
+                                             ?>                                                
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Delete
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- Delete Exam -->
+
+        <!-- view Exam result-->
+        <div class="modal fade bs-example-modal-center-result" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Generate Exam Result</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('BroadSheet') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label class="control-label">Select Exam Title</label>
+                                            <select class="form-control select2" name="exam" required="">
+                                                <option selected="" disabled="" >Choose Exam Title</option>
+                                                <?php
+                                                $get_data=$this->User_Model->get_table_data();
+                                                    foreach($get_data as $val){
+                                              echo" <option value='".$val->eid."'>". $val->title."</option>";
+                                               } 
+                                             ?>                                                
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-12">
+                                            <label class="control-label">Select Result Type</label>
+                                            <select class="form-control select2" name="mode" required="">
+                                                <option selected="" disabled="" >Choose Result To Generate</option>
+                                                <option value="BroadSheet" >BroadSheet</option>
+                                                <option value="Individual" >Individual</option></select>
+                                        </div>
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Generate Result
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- view Exam result -->
+
         <!-- check student -->
         <div class="modal fade bs-example-modal-centerab" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -317,3 +395,67 @@ $username = $this->session->userdata('username');
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
         <!-- check student -->
+
+        <!-- add admin -->
+        <div class="modal fade bs-example-modal-centeraadmin" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Add New Admin</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('Add_admin_now_') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label>Full Name</label>
+                                            <div>
+                                                <input data-parsley-type="alphanum" type="text"
+                                                        class="form-control" required name="name" 
+                                                        placeholder="Enter Full Name"/>
+                                            </div>
+                                        </div>
+
+                                         <div class="form-group col-sm-12">
+                                            <label>Email</label>
+                                            <div>
+                                                <input data-parsley-type="alphanum" type="email"
+                                                        class="form-control" required name="email" 
+                                                        placeholder="Enter Email"/>
+                                            </div>
+                                        </div>
+
+                                         <div class="form-group col-sm-12">
+                                            <label>Username</label>
+                                            <div>
+                                                <input data-parsley-type="alphanum" type="text"
+                                                        class="form-control" required name="username" 
+                                                        placeholder="Enter username"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-sm-12">
+                                            <label>password</label>
+                                            <div>
+                                                <input data-parsley-type="alphanum" type="password"
+                                                        class="form-control" required name="password" 
+                                                        placeholder="Enter password"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Create Admin
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- add admin -->

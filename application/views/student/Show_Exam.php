@@ -1,46 +1,63 @@
 <!-- special css to make a rectanguar radio button  -->
+<!-- Show loading image while my controller execute a function -->
  <style>
   /* [THE LOADING SPINNER] */
-#spinner-front, #spinner-back{
+
+#overlay {
+  background-color: black;
+  color: #666666;
   position: fixed;
-  visibility: visible;
-  opacity: 0;
+  height: 100%;
   width: 100%;
-  transition: all 1s;
-}
-#spinner-front{
-  z-index: 9999;
-  margin-top: 45vh;
-  color: #fff;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
   text-align: center;
-}
-#spinner-back{
-  z-index: 9998;
-  height: 100vh;
-  background: #000;
-}
-#spinner-front.show{
-  visibility: visible;
-  opacity: 1;
-}
-#spinner-back.show{
-  visibility: visible;
-  opacity: 0.7;
+  padding-top: 18%;
+  /*opacity: .80;*/
 }
 
-#hideMe {
-    -webkit-animation: cssAnimation 5s forwards; 
-    animation: cssAnimation 5s forwards;
+#overlay p{
+    color:white;
+    font-size: 20px;
 }
-@keyframes cssAnimation {
-    0%   {opacity: 1;}
-    90%  {opacity: 1;}
-    100% {opacity: 0;}
+
+
+.spinner {
+    margin: 0 auto;
+    height: 64px;
+    width: 64px;
+    animation: rotate 0.8s infinite linear;
+    border: 5px solid firebrick;
+    border-right-color: transparent;
+    border-radius: 50%;
 }
-@-webkit-keyframes cssAnimation {
-    0%   {opacity: 1;}
-    90%  {opacity: 1;}
-    100% {opacity: 0;}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+  
+#overlay {
+  background: black;
+  color: #666666;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
+  text-align: center;
+  padding-top: 30%;
+  opacity: .80;
+}
 }
 /*the loading spiner ends below is the rectangular button*/
 .boxed:after{
@@ -76,18 +93,16 @@
     </style>
        <!-- special css to make a rectanguar radio button  -->
         <!-- Background -->
+         <div id="overlay" style="display:none;">
+            <div class="spinner"></div>
+            <br/>
+            <p>Exam is Starting in <span id="countdown_by_me"></span> <br>Question Loading...</p>
+        </div>
         <div class="account-pages"></div>
    
         <!-- Begin page -->
         <div class="m-t-10 col-sm-12">
                   <!-- [THE SPINNER - THIS IS ALL YOU NEED] -->
-    <div id="hideMe" >
-        <div id="spinner-front" class="show">
-            <img src="ajax-loader.gif"/><br>
-            Question loading...
-            </div>
-        <div id="spinner-back" class="show"></div>
-    </div>
             <div class="card" style="background-color:#DCDCDC;">
                 <div class="card-block">
                     <div class="alert alert-success alert-dismissible fade show col-sm-12" role="alert" style="margin-bottom: -15px;">
@@ -103,7 +118,7 @@
                                 $sn= $this->session->userdata('sn');
                                 $eid = $this->session->userdata('eid');
                                 $total = $this->session->userdata('Total_Number');
-                                 $remaining = (($this->session->userdata('duration')* 60) - ((time() - $this->session->userdata('time_remaining'))));
+                                 $remaining = (((0.05 + $this->session->userdata('duration'))* 60) - ((time() - $this->session->userdata('time_remaining'))));
             echo '<script>
             var seconds = ' . $remaining . ' ;
             function end(){
@@ -139,7 +154,8 @@
                 <button class="btn btn-primary waves-effect waves-light col-sm-3 text-center" style="margin: 0px auto;"> <b>Time Left : <span id="countdown"></span></b></button>                                
                  <div class="row col-sm-12">
                                 <?php
-                                echo '<form action="'.base_url('save_answer_selected?q=quiz&step=2&eid=' . $eid . '&n=' . $sn . '&t=' . $total).'" method="POST" id="form">';
+                                echo '<form action="'.base_url('save_answer_selected?q=quiz&step=2&eid=' . $eid . '&n=12xooiei29&t=' . $total).'"  method="POST" id="form">
+                                    <input type="hidden" value="'.$total.'" name="total" />';
                              shuffle($Exams_Questions);
                              $Total_now = 1;   
                                 foreach ($Exams_Questions as $key => $value) {
@@ -157,70 +173,72 @@
                     $correctId  = $value->correctId;
                     $subject = $value->subject;
                                 if($Total_now==1){
+                                    $sn = $Total_now-1;
                                 echo '<div class="col-sm-12 cont" id="question'.$Total_now.'"style="margin-left:65px;margin-top:20px;">
                                 <p class="questions" id="qname'.$Total_now.'"></p>
                                 <div class="row"><tr><td><div>' . $Total_now . '</div> : &nbsp;&nbsp;</td><td><div>'.$qns.'</div></td></tr></div>';
-                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject" />
-                                    <input type="hidden" value="'.$total.'" name="total" />
-                                    <input type="hidden" value="'.$Total_now.'" name="current" />
-                                    <input type="hidden" value="'.$qid.'" name="qid" />
-                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn" />
-                                    <input type="hidden" value="'.$correctId.'" name="correct" />
+                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject[]" />
+                                    <input type="hidden" value="'.$Total_now.'" name="current[]" />
+                                    <input type="hidden" value="'.$qid.'" name="qid[]" />
+                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn[]" />
+                                    <input type="hidden" value="'.$correctId.'" name="correct[]" />
                                     <br/>
-                                    <div class="boxed"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans'.$Total_now.'" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
+                                    <div class="row" >
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans['.$sn.']" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
                                     
-                                    <div class="boxed "><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans'.$Total_now.'" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans['.$sn.']" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans'.$Total_now.'" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans['.$sn.']" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans'.$Total_now.'" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
-                                    </div> <button id="'.$Total_now.'" class="next btn btn-success" type="button" >Next</button></div></div>';}else if($Total_now > 1 && $Total_now  < $total){
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans['.$sn.']" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
+                                    </div> <div class="col-sm-12" ><p class="text-center" style="margin-top:10px;"><button id="'.$Total_now.'" class="next btn btn-success" type="button" >Next</button></p></div></div></div></div>';}else if($Total_now > 1 && $Total_now  < $total){
+                                         $sn = $Total_now-1;
             echo '<div class="col-sm-12 cont" id="question'.$Total_now.'"style="margin-left:65px;margin-top:20px;">
                                 <p class="questions" id="qname'.$Total_now.'"></p>
                                 <div class="row"><tr><td><div>' . $Total_now . '</div> : &nbsp;&nbsp;</td><td><div>'.$qns.'</div></td></tr></div>';
-                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject" />
-                                    <input type="hidden" value="'.$total.'" name="total" />
-                                    <input type="hidden" value="'.$Total_now.'" name="current" />
-                                    <input type="hidden" value="'.$qid.'" name="qid" />
-                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn" />
-                                    <input type="hidden" value="'.$correctId.'" name="correct" />
+                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject[]" />
+                                    <input type="hidden" value="'.$Total_now.'" name="current[]" />
+                                    <input type="hidden" value="'.$qid.'" name="qid[]" />
+                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn[]" />
+                                    <input type="hidden" value="'.$correctId.'" name="correct[]" />
                                     <br/>
-                                    <div class="boxed"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans'.$Total_now.'" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
+                                    <div class="row" >
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans['.$sn.']" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
                                     
-                                    <div class="boxed "><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans'.$Total_now.'" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans['.$sn.']" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans'.$Total_now.'" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans['.$sn.']" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans'.$Total_now.'" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans['.$sn.']" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
                                     </div>';
-                                    echo '<button id="'.$Total_now.'" class="previous btn btn-success" type="button">Previous</button>                    
-        <button id="'.$Total_now.'" class="next btn btn-success" type="button" >Next</button></div></div>';
+                                    echo '<div class="col-sm-12" ><p class="text-center" style="margin-top:10px;"><button id="'.$Total_now.'" class="previous btn btn-success" type="button">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                 <button id="'.$Total_now.'" class="next btn btn-success" type="button" >Next</button></p></div></div></div></div>';
         }elseif ($Total_now == $total) {
+             $sn = $Total_now-1;
             echo '<div class="col-sm-12 cont" id="question'.$Total_now.'" style="margin-left:65px;margin-top:20px;">
                                 <p class="questions" id="qname'.$Total_now.'"></p>
                                 <div class="row"><tr><td><div>' . $Total_now . '</div> : &nbsp;&nbsp;</td><td><div>'.$qns.'</div></td></tr></div>';
-                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject" />
-                                    <input type="hidden" value="'.$total.'" name="total" />
-                                    <input type="hidden" value="'.$Total_now.'" name="current" />
-                                    <input type="hidden" value="'.$qid.'" name="qid" />
-                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn" />
-                                    <input type="hidden" value="'.$correctId.'" name="correct" />
+                                echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject[]" />
+                                    <input type="hidden" value="'.$Total_now.'" name="current[]" />
+                                    <input type="hidden" value="'.$qid.'" name="qid[]" />
+                                    <input type="hidden" value="'.$qid_sn.'" name="qid_sn[]" />
+                                    <input type="hidden" value="'.$correctId.'" name="correct[]" />
                                     <br/>
-                                    <div class="boxed"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans'.$Total_now.'" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
+                                    <div class="row">
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(A)</span></td><td>&nbsp;&nbsp;<input type="radio" id="'.$optAid.'" name="ans['.$sn.']" value="'.$optAid.'" onclick="enable()"><label for="'.$optAid.'">'.$optionA.'</label></td></tr></div>
                                     
-                                    <div class="boxed "><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans'.$Total_now.'" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
+                                    <div class="boxed col-sm-12"><tr><td><span  style="font-size:18px;display:inline-block;">(B)</span></td><td>&nbsp;&nbsp;<input type="radio" id="' . $optBid . '" name="ans['.$sn.']" value="'.$optBid.'" onclick="enable()"><label for="'.$optBid.'">'.$optionB.'</label></td></tr>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans'.$Total_now.'" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(C)</span>&nbsp;&nbsp;<input type="radio" id="'.$optCid.'" name="ans['.$sn.']" value="'.$optCid.'" onclick="enable()"><label for="'.$optCid.'">'.$optionC.'</label>
                                     </div>
 
-                                    <div class="boxed"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans'.$Total_now.'" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
+                                    <div class="boxed col-sm-12"><span  style="font-size:18px;">(D)</span>&nbsp;&nbsp;<input type="radio" id="'.$optDid.'" name="ans['.$sn.']" value="'.$optDid.'" onclick="enable()"><label for="'.$optDid.'">'.$optionD.'</label>
                                     </div>';
-                                    echo '<button id="'.$Total_now.'" class="previous btn btn-success" type="button">Previous</button><p class="text-center" style="margin-top:10px;"><input type="submit" class="btn btn-info" disabled="true" id="sbutton" value="Submit" > </p></div></div>';
+                                    echo '<div class="col-sm-12" ><p class="text-center" style="margin-top:10px;"><button id="'.$Total_now.'" class="previous btn btn-success" type="button">Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info" disabled="true" id="sbutton" value="" >Submit</button> </p></div></div></div></div>';
             # code...
         }
                                     if ($Total_now++ == $total) {
@@ -261,6 +279,18 @@
 
 <!-- to disable backspace -->
 <script>
+    var timeleft = 5;
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("countdown_by_me").innerHTML = " ";
+  } else {
+    document.getElementById("countdown_by_me").innerHTML = timeleft + " seconds";
+  }
+  timeleft -= 1;
+}, 1000);
+    // diplay the loader for 5 seconds 
+    $('#overlay').fadeIn().delay(5000).fadeOut();
 //divs to show by qquestion
 $('.cont').css('display','none');
 $('#question'+1).css('display','block');

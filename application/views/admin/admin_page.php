@@ -32,7 +32,7 @@
                         <div class="col-12">
                             <div class="card m-b-20">
                                 <div class="card-body">    
-                                    <h4 class="mt-0 header-title">Exams in the database</h4>
+                                    <div class="col-sm-12 m-b-20"><div class="row" ><h4 class="mt-0 header-title col-sm-6">Admin details from Database</h4><span class="col-sm-6" ><button style="float:right;" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-centeraadmin">Add New Admin</button></span> </div></div>
                                 <div class="row">
                         <div class="col-12">
                             <div class="card m-b-20">
@@ -42,22 +42,24 @@
                                         <thead>
                                             <tr>
                                                     <th>S/N</th>
-                                                    <th>Exam Title</th>    
-                                                    <th>Reg Num</th>
-                                                    <th> Candidate Name</th>
-                                                    <th>Theory Score</th>
+                                                    <th>Name</th>    
+                                                    <th>Email</th>
+                                                    <th> Username</th>
+                                                    <th>Password</th>
+                                                    <th></th>
                                                 </tr>
                                         </thead>
                                         <tbody>
                                        <?php
-                                                     if ($student) {
-                                                    foreach($student as $key => $val){
+                                                     if ($admin) {
+                                                    foreach($admin as $key => $val){
                                                echo ' <tr>
                                                     <td>'.( 1 + $key).'</td> 
-                                                    <td>'.$val->exam_name.' </td>
-                                                    <td>'.$val->reg_num.' </td>
-                                                    <td>'.$val->name.'</td>
-                                                    <td>'.$val->theory.'</td>
+                                                    <td>'.$val->name.' </td>
+                                                    <td>'.$val->email.' </td>
+                                                    <td>'.$val->username.'</td>
+                                                    <td>'.$val->password.'</td>
+                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Welcome/Jump_Admin_delete/' . $val->id . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever"></i></a></td>
                                                 </tr>';
                                                 }
                                                }else{

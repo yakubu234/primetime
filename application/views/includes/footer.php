@@ -3,7 +3,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        2018 © Agroxa <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</span>
+                        <?php echo date('Y'); ?> <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i><span><a href="https://github.com/yakubu234"> &nbsp;&nbsp;by Yakubu Abiola</a> </span></span>
                     </div>
                 </div>
             </div>
