@@ -73,7 +73,7 @@
                                                echo ' <tr>
                                                     <td>'.$sn.'</td>
                                                     <td>
-                                                    <input type="hidden" name="id[]" value="'.$val["reg_num"].'"><input type="hidden" name="name[]" value="'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'"><input type="checkbox" name="validate[]" value="'.$val["reg_num"].'" id="add_nums" class="check_id" onclick="xxx()">
+                                                    <input type="hidden" name="id[]" value="'.$val["reg_num"].'"><input type="hidden" name="name[]" value="'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'"><input type="checkbox" name="validate[]" value="'.$val["reg_num"].'"  class="check_id_new" onclick="xxx()">
                             </td>
                                                     <td><img src="'.base_url().'Student_Pic/'.$val["img"].'" alt="" class="rounded" style="width: 70px;height:60px;"></td>
                                                     <td>'.$val["reg_num"].' </td>
@@ -96,7 +96,7 @@
                                     <script type="text/javascript">
                                      function xxx()
                                         {
-                                          var zzz = $(".check_id:checked").length;
+                                          var zzz = $(".check_id_new:checked").length;
                                           $("#getSelected").val(zzz);    
                                         }
                                     </script>

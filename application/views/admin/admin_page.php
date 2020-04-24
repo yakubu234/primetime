@@ -59,7 +59,7 @@
                                                     <td>'.$val->email.' </td>
                                                     <td>'.$val->username.'</td>
                                                     <td>'.$val->password.'</td>
-                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Welcome/Jump_Admin_delete/' . $val->id . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever"></i></a></td>
+                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Usr/JumpQuestion_Admin_delete/' . $val->id . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever" onClick="return doconfirm();"></i></a></td>
                                                 </tr>';
                                                 }
                                                }else{
@@ -92,3 +92,14 @@
         <!-- page wrapper end -->
 
         <!-- Footer -->
+
+<script>
+function doconfirm()
+{
+    job=confirm("Are you sure to delete admin permanently?");
+    if(job!=true)
+    {
+        return false;
+    }
+}
+</script>

@@ -39,6 +39,7 @@ function __construct(){
      			$this->session->set_userdata('name',$data['name']);
      			$this->session->set_userdata('username',$data['username']);
       			$this->session->set_userdata('type',$data['type']);
+            $this->session->set_userdata('id',$data['id']);
     			redirect(base_url('Dashboard_Display'));
     		}else{
     			 $this->session->set_flashdata('errors', 'Incorrect Login Details.');
@@ -50,11 +51,132 @@ function __construct(){
 		}
 	}
 
+  public function Admin_Update_controller(){
+   $id = $this->input->post('id');
+    $username = $this->input->post('username');
+    $name = $this->input->post('name');
+    $email = $this->input->post('email');
+    $password = $this->input->post('password');
+    $newpassword = $this->input->post('newpassword');
+    $data = $this->db->get_where('admin',array('id'=>$id))->result_array();
+    $this->session->set_userdata('email',$data['email']);
+          $this->session->set_userdata('name',$data['name']);
+          $this->session->set_userdata('username',$data['username']);
+            $this->session->set_userdata('type',$data['type']);
+            $this->session->set_userdata('id',$data['id']);
+    if ($newpassword != "") {
+      $data = array(
+          'name' =>$name,
+          'email' =>$email,
+          'password' =>$newpassword,
+              );
+          $this->db->where('id', $id);
+          $this->db->where('password', $password);
+           $this->db->update('admin', $data);
+          if ($this->db->affected_rows() > 0) {
+           $this->session->set_flashdata('success', 'Your Profile has been Updated');           
+          $this->load->view('includes/header');
+              $this->load->view('admin/dashboard');
+              $this->load->view('includes/footer');
+          }else{
+           $this->session->set_flashdata('errors', 'Password do not match that of the Database');
+          $this->load->view('includes/header');
+              $this->load->view('admin/dashboard');
+              $this->load->view('includes/footer');
+          }
+    }else{
+     $data = array(
+          'name' =>$name,
+          'email' =>$email,
+              );
+          $this->db->where('id', $id);
+          $this->db->where('password', $password);
+          $this->db->update('admin', $data);
+          if ($this->db->affected_rows() > 0) {
+           $this->session->set_flashdata('success', 'Your Profile has been Updated');           
+              $this->load->view('includes/header');
+            $this->load->view('admin/dashboard');
+            $this->load->view('includes/footer');
+          }else{
+           $this->session->set_flashdata('errors', 'Password do not match that of the Database');
+              $this->load->view('includes/header');
+              $this->load->view('admin/dashboard');
+              $this->load->view('includes/footer');
+          }
+    }
+  }
+
 	public function Dashboard(){
 		$this->load->view('includes/header');
 		$this->load->view('admin/dashboard');
 		$this->load->view('includes/footer');
 	}
+
+  public function Updae_exam_Now_controller(){
+      if($this->input->post()){
+    $this->form_validation->set_rules('title', 'title', 'required|min_length[4]');
+      $this->form_validation->set_rules('total', 'total number of exam', 'required');
+      $this->form_validation->set_rules('demo0', 'Right answer Score', 'required');
+      $this->form_validation->set_rules('demo3', 'Wrong answer Score', 'required');
+      $this->form_validation->set_rules('start', 'start date ', 'required');
+      $this->form_validation->set_rules('demo1', 'Pass Mark', 'required');
+      $this->form_validation->set_rules('end', 'end date', 'required');
+      $this->form_validation->set_rules('demo3_22', 'Duration of exam in minutes', 'required');
+       if ($this->form_validation->run() == FALSE) {
+            // set the validation errors in flashdata (one time session)
+        $this->session->set_flashdata('errors', validation_errors());
+        redirect(base_url() . 'Setting_in_Exam');
+      } else {
+      $eid = $this->input->post('eid');
+      
+      $data = array(
+          'title' =>ucwords(strtolower($this->input->post('title'))),
+          'total' =>$this->input->post('total'),
+          'correct' =>$this->input->post('demo0'),
+          'passmark' =>$this->input->post('demo1'),
+          'wrong' =>$this->input->post('demo3'),
+          'start' =>$this->input->post('start'),
+          'end' =>$this->input->post('end'),
+          'time' =>$this->input->post('demo3_22'),
+          'reg_time'=>date("F d, Y h:i:s A"),
+          'eid'=>$eid,
+        );
+
+      $dataTwo = array(
+          'exam_name' =>ucwords(strtolower($this->input->post('title'))),
+          'totalQuestion' =>$this->input->post('total'),
+          'scoreObtainable' =>($this->input->post('total') *$this->input->post('demo0')),
+          'WrongScore' =>$this->input->post('demo3'),
+          'startDate' =>$this->input->post('start'),
+          'endDate' =>$this->input->post('end'),
+          'duration' =>$this->input->post('demo3_22'),
+        );
+      $this->db->where('eid', $eid);
+           $this->db->update('exam_ready', $dataTwo);
+            $this->db->where('eid', $eid);
+           $this->db->update('exam', $data);
+          if ($this->db->affected_rows() > 0) {
+
+            $query = $this->db->query("SELECT * FROM exam WHERE eid = '$eid' ");
+        $result['Exam_random'] = $query->result_array();
+          $this->session->set_userdata('success','Exam Has just been Updated');
+          $this->load->view('includes/header');
+          $this->load->view('admin/SettingsExam',$result);
+          $this->load->view('includes/footer');
+      }else{
+        $this->session->set_flashdata('errors', 'Exam has not been Updated');
+        redirect(base_url('Setting_in_Exam'));
+      }
+      }
+    }else{      
+        $query = $this->db->query("SELECT * FROM exam ORDER BY id DESC LIMIT 1");
+        $result['Exam_random'] = $query->result_array();
+          $this->session->set_userdata('success','Sorry Exam Failed to Update Due to Error 401');
+          $this->load->view('includes/header');
+          $this->load->view('admin/SettingsExam',$result);
+          $this->load->view('includes/footer');
+    }
+  }
 
 	public function CreateExam(){
 		if($this->input->post()){
@@ -673,6 +795,15 @@ function __construct(){
   public function JumpQuestion_Admin_delete($eid,$sn){
             $id = $this->uri->segment(3);
             $sn = $this->uri->segment(4);
+             $this->db->where('admin.id',$id);
+              $this->db->delete('admin');
+              if ($this->db->affected_rows() > 0 ) {
+               $this->session->set_flashdata('success', 'Admin Deleted');
+              redirect(base_url() . 'Add_admin_now_');
+              }else{
+               $this->session->set_flashdata('errors', 'Unable to delete Admin');
+           redirect(base_url() . 'Add_admin_now_');
+                 }
           }
 
 	public function logout(){
@@ -686,6 +817,25 @@ function __construct(){
     	$this->session->sess_destroy();
    		redirect(base_url('/'));
  	}
+
+  public function Setting_in_Exam_controller(){
+    if ($this->input->post()) {
+      $exam = $this->input->post('exam');
+      $query = $this->db->query("SELECT * FROM exam WHERE eid = '$exam'");
+        $result['Exam_random'] = $query->result_array();
+          $this->session->set_userdata('success','You are viewing a particular Exam');
+          $this->load->view('includes/header');
+          $this->load->view('admin/SettingsExam',$result);
+          $this->load->view('includes/footer');
+      }else{
+      $query = $this->db->query("SELECT * FROM exam ORDER BY id DESC LIMIT 1");
+        $result['Exam_random'] = $query->result_array();
+          $this->session->set_userdata('success','You are viewing a particular Exam');
+          $this->load->view('includes/header');
+          $this->load->view('admin/SettingsExam',$result);
+          $this->load->view('includes/footer');
+        }
+  }
 
   public function GrantTime(){
     $data = array(

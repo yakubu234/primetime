@@ -4,12 +4,52 @@ if ($this->session->userdata('username') == '' ) {
 }else{
 $email = $this->session->userdata('email') ;
 $username = $this->session->userdata('username');
+$name = $this->session->userdata('name');
+$id = $this->session->userdata('id');
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
+        <style type="text/css">
+            /*input[type=checkbox] + label {
+  display: block;
+  margin: 0.4em 0.2em 0.2em 0.2em;
+  cursor: pointer;
+  padding: 0.2em;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label:before {
+  content: "\2714";
+  border: 0.1em solid #000;
+  border-radius: 0.2em;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  padding-left: 0.2em;
+  padding-bottom: 0.3em;
+  margin-right: 0.2em;
+  margin-top: 0.2em;
+  vertical-align: bottom;
+  color: transparent;
+  transition: .2s;
+}
+
+input[type=checkbox] + label:active:before {
+  transform: scale(0);
+}
+
+input[type=checkbox]:checked + label:before {
+  background-color: MediumSeaGreen;
+  border-color: MediumSeaGreen;
+  color: #fff;
+}*/
+        </style>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
         <title>Lariken College - Welcome to official site of Lariken College| no 1 school in Ibadanstate| top 5 school in nigeria|top 10 school in Oyo State|top ten school in nigeria|nigerian british standard curriculum|AOjf|Abayomi Oluwatosin Jiboku Foundation</title>
@@ -41,12 +81,7 @@ $username = $this->session->userdata('username');
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/css/icons.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" type="text/css">
-         <!-- jQuery  -->
-        <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/jquery.slimscroll.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/waves.min.js"></script>
-
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
     </head>
 
     <body>
@@ -80,13 +115,18 @@ $username = $this->session->userdata('username');
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                         <!-- item-->
-                                        <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target=".bs-example-modal-center-profile"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
                                         <a class="dropdown-item" href="<?php echo base_url('Unlock_LockScreen') ?>"><i class="mdi mdi-lock-open-outline m-r-5"></i> Lock screen</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power text-danger"></i> Logout</a>
                                     </div>                                                                    
                                 </div>
                             </li>
+
+                              <li class="dropdown notification-list d-none d-sm-block">
+                                <a  style="color:white;" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power"  style="font-size:40px;color:white;" ></i></a>
+                            </li>
+
                             
                             <li class="menu-item list-inline-item">
                                 <!-- Mobile menu toggle-->
@@ -125,19 +165,7 @@ $username = $this->session->userdata('username');
                             </li>
 
                             <li class="has-submenu">
-                                <a href="#"><i class="mdi mdi-settings"></i>Settings</a>
-                                <ul class="submenu megamenu">
-                                    <li>
-                                        <ul>
-                                            <li><a href="ui-alerts.html">Alerts</a></li>
-                                            <li><a href="ui-buttons.html">Buttons</a></li>
-                                            <li><a href="ui-badge.html">Badge</a></li>
-                                            <li><a href="ui-cards.html">Cards</a></li>
-                                            <li><a href="ui-carousel.html">Carousel</a></li>
-                                            <li><a href="ui-dropdowns.html">Dropdowns</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <a href="<?php echo base_url('Setting_in_Exam') ?>"><i class="mdi mdi-settings"></i>Settings</a>
                             </li>
 
                             <li class="has-submenu">
@@ -163,6 +191,10 @@ $username = $this->session->userdata('username');
 
                             <li class="has-submenu">
                                 <a data-toggle="modal" data-target=".bs-example-modal-center-result"><i class="mdi mdi-google-pages"></i>Generate Result</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="<?php echo base_url('Just_say_Logout'); ?>" ><i class="mdi mdi-power"></i>Logout</a>
                             </li>
                         </ul>
                         <!-- End navigation menu -->
@@ -459,3 +491,62 @@ $username = $this->session->userdata('username');
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
         <!-- add admin -->
+<div class="modal fade bs-example-modal-center-profile" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Admin Profile</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <form action="<?php echo base_url('Admin_Update') ?>" method="POST" >
+                                        <div class="row">
+                                            <input type="hidden" name="id" value="<?php echo $id; ?>" >
+                                        <div class="form-group col-sm-12">
+                                            <label>Username (Non Editable)</label>
+                                            <input type="text" class="form-control" required placeholder="Type something"  value="<?php echo $username; ?>" name="username" readonly />
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <label>Full Name</label>
+                                            <input type="text" class="form-control" required placeholder="Type something"  value="<?php echo $name; ?>" name="name" />
+                                        </div>
+
+                                        <div class="form-group col-sm-12">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control"  placeholder="Enter Email Here"  value="<?php echo $email; ?>" name="email" />
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <label>Existing Password 
+                                            (Needed to Update)</label>
+                                            <input type="password" class="form-control"  placeholder="Enter Existing Password Here" required="" name="password" />
+                                        </div>
+                                        <div class="form-group col-sm-12 new_password" style="display:none">
+                                            <label>New Password</label>
+                                            <input type="password" class="form-control"  placeholder="Enter Existing Password Here" name="newpassword" />
+                                        </div>
+                                        <div class="form-group col-sm-12" >
+                                            <div class="row">
+                                                <div class="col-sm-6" >
+                                                <input type="checkbox" id="fruit1" name="fruit-1" value="Password-update">
+                                                <label for="fruit1">Change Password</label> </div><div class="col-sm-6" >
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Update Profile
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+
+                                            <script>
+                                                $('#fruit1').click(function() {
+                                                $(".new_password").toggle(this.checked);
+                                              });
+                                            </script>
