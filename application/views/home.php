@@ -52,7 +52,7 @@
                     <div class="p-3">
 
                         <h4 class="text-muted font-18 m-b-5 text-center">Computerized Aptitude Test</h4>
-                        <p class="text-muted text-center"><span style="color:red;">Please this portal should be strictly accessed with a computer</span><br>See the Administrator for username and Password</p>
+                        <p class="text-muted text-center"><span style="color:red;">For better user experience we advice you use a <b>Tablet</b> or a <b>PC</b></span><br>See the Administrator for username and Password</p>
 
                         <form class="form-horizontal m-t-20" action="<?php echo base_url('Login_Student_') ?>" method="POST">
 

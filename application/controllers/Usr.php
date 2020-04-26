@@ -236,37 +236,20 @@ function __construct(){
       $id = $this->uri->segment(3);
       $eid = $this->uri->segment(4);
       $get = $this->db->get_where('exam_ready',array('id'=>$id))->row();
-          $reg_num = $get->reg_num;
-      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.id = '$id'";
+      $reg_num = $get->reg_num;
+      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img,student.gender FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.id = '$id'";
            $query = $this->db->query($query);
            $usage['StudentResult'] =  $query->result();
            #get count data herefor analysis
            $query = "SELECT subject , user_answer_id, correct_id, COUNT(*)FROM student_history WHERE eid = '$eid' AND reg_num = '$reg_num' GROUP BY subject";
            $query = $this->db->query($query);
-           $data = $query->result_array();
-           foreach ($data as $key => $value) {
-            echo $value['subject'].'<br>';
-            echo $value['COUNT(*)'].'<br>';
-            echo $value['user_answer_id'].'<br>';
-            echo $value['correct_id'].'<br>';
-            
-           }
+           $usage['count_course'] = $query->result_array();
            // var_dump($query->result());
 
            // count all marks per subject answered
             $query = "SELECT subject , user_answer_id, correct_id, COUNT(*)FROM student_history WHERE eid = '$eid' AND reg_num = '$reg_num' AND user_answer_id <=> correct_id GROUP BY subject";
            $query = $this->db->query($query);
-           $data = $query->result_array();
-           var_dump($data);
-           foreach ($data as $key => $value) {
-            echo 'num_of_correct'.$value['subject'].'<br>';
-            echo $value['COUNT(*)'].'<br>';
-            echo $value['user_answer_id'].'<br>';
-            echo $value['correct_id'].'<br>';
-            
-           }
-           die();
-           $usage['StudentResult_count'] =  $query->result();
+           $usage['score_per_subject'] = $query->result_array();
           $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$eid))->result();
           $this->session->set_userdata('success','You are viewing BroadSheet Result of a Particular Exam');
           $this->load->view('admin/resultPage',$usage); 
@@ -474,7 +457,7 @@ function __construct(){
           $wrong = $get->wrong;
           $endDate = $get->end;
 			$data = array();
-		 $count = $this->input->post('Total_number');
+		  $count = count($this->input->post('name'));
 		 for($i=0; $i<$count; $i++) {           
 		    $data[] = array(
             'reg_num'=>$this->input->post('validate')[$i],
@@ -494,7 +477,16 @@ function __construct(){
 		 } 
      $key = 'reg_num';
      $array = $data;
-     $result = $this->removeElementWithValue($array,$key,$eid);
+     $remove_if_exist = $this->removeElementWithValue($array,$key,$eid);
+     if (!empty($remove_if_exist)) {
+     $array = $remove_if_exist;
+     // $result = $this->removeElementWithEmptyRegValue($array,$key,$eid);
+     var_dump($array);
+     // var_dump($result);
+     die();
+     }else{
+      $result = $remove_if_exist;
+     }
      if (empty($result)) {
          $this->session->set_flashdata('success', 'Student has been Added to Database before');
       $this->ShowStudent_Availabe_for_Specific_Exam($eid);
@@ -537,6 +529,18 @@ function __construct(){
      return $array;
 }
 
+function removeElementWithEmptyRegValue($array, $key,$eid ){
+ $row = "";
+     foreach($array as $subKey => $subArray){
+       
+          if($subArray[$key] == $row){
+               unset($array[$subKey]);
+          }
+        }
+     
+     return $array;
+}
+
 	public function ShowStudent_Availabe_for_Specific_Exam($eid){
 		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
 		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
@@ -559,17 +563,39 @@ function __construct(){
 
 	}
 
+  public function send_theory_now(){
+    $eid = $this->input->post('eid');
+      $data = array(
+            'theory' => $this->input->post('theory'),
+            'Userid' => $this->input->post('Userid'),
+        );
+      if(!empty($data)){
+        echo "you are here";
+
+        $eid = $this->input->post('exam');
+    $usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
+    $this->session->set_userdata('success','You are Viewing Students Registered on the database');
+    $this->load->view('includes/header');
+    $this->load->view('admin/Student_For_Exam_specific',$usage);
+    $this->load->view('includes/footer');
+        return true;
+      }else{
+        return false;
+      }
+  }
+
 	public function Add_Student(){
 		if($this->input->post()){ 
    if(!empty($_FILES['file']['name'])){
+    $config['encrypt_name'] = TRUE;
     $config['upload_path'] = './Student_Pic/';    
-    $config['allowed_types'] = 'jpg|jpeg|png|gif|img'; 
+    $config['allowed_types'] = 'jpg|jpeg|png|gif|img|jfif'; 
     $this->load->library('upload',$config);
     $this->upload->initialize($config);
     if($this->upload->do_upload('file')){
       $uploadData = $this->upload->data();
       $tmp_name = 'Student_Pic/' . $uploadData['file_name'];
-      $this->form_validation->set_rules('Reg', 'Reg Number', 'required|valid_email[student.reg_num]');
+      $this->form_validation->set_rules('Reg', 'Reg Number', 'required|is_unique[student.reg_num]');
       if ($this->form_validation->run() == FALSE) {
       $this->session->set_flashdata('errors', validation_errors());
       $this->load->view('includes/header');
@@ -587,19 +613,19 @@ function __construct(){
     		);
        $res = $this->db->insert('student',$data);
        if ($res == true) {
-       	$this->session->set_userdata('success','Student has been added to database');
+       	$this->session->set_flashdata('success','Student has been added to database');
        	$this->load->view('includes/header');
 		$this->load->view('admin/RegisterStudent');
 		$this->load->view('includes/footer');
        }else{
-       	$this->session->set_userdata('errors','Student unable to be added to database');
+       	$this->session->set_flashdata('errors','Student unable to be added to database');
        	$this->load->view('includes/header');
 		$this->load->view('admin/RegisterStudent');
 		$this->load->view('includes/footer');
        }
      }
 			}else{
-		$this->session->set_userdata('errors','Image has not been Uploaded please Upload again');
+		$this->session->set_flashdata('errors','Image has not been Uploaded please Upload again');
 		$this->load->view('includes/header');
 		$this->load->view('admin/RegisterStudent');
 		$this->load->view('includes/footer');
@@ -667,14 +693,14 @@ function __construct(){
           }
           fclose($fp);
           if ($insert == true) {
-            $this->session->set_userdata('success','Student has been added to database');
+            $this->session->set_flashdata('success','Student has been added to database');
             $this->SuccessUpload($file_del);
           }else{
-          	$this->session->set_userdata('errors','Upload not successful Please re-try');
+          	$this->session->set_flashdata('errors','Upload not successful Please re-try');
           	$this->SuccessUpload($file_del);
           }  
         }else{
-        	$this->session->set_userdata('errors','Upload not successful Please re-try');
+        	$this->session->set_flashdata('errors','Upload not successful Please re-try');
        		$this->load->view('includes/header');
 		    $this->load->view('admin/RegisterStudent');
 			$this->load->view('includes/footer');

@@ -1,3 +1,41 @@
+<?php
+if ($this->session->userdata('username') == '' ) {
+  redirect(base_url().'/');
+}else{
+$email = $this->session->userdata('email') ;
+$username = $this->session->userdata('username');
+$name = $this->session->userdata('name');
+$id = $this->session->userdata('id');
+}
+
+$StudentResult;#for information at exam ready
+$count_course ; #for listing course answered by subject and total taken either correct or incorrect
+$score_per_subject; #for score per subject
+$BroadSheet ; ##information of the exam at the exam table ##
+foreach ($BroadSheet as $key => $value) {
+  # code...
+  $examName = $value->title;
+  $totalQuestion = $value->total;
+  $timeAllocated = $value->time;
+  $TimeConducted = $value->start;
+  $CummulativePassMark = $value->passmark;
+  $ScoreObtainable = ($value->correct * $totalQuestion);
+
+}
+
+foreach ($StudentResult as $key => $examReady) {
+  # code...
+  $reg_num = $examReady->reg_num;
+  $Candidatename = $examReady->name;
+  $gender = $examReady->gender;
+  $totalQuestionReady = $examReady->totalQuestion;
+  $theory = $examReady->theory;
+  $score = $examReady->score;
+  $correct = $examReady->correct;
+  $wrong = $examReady->wrong;
+}
+?>
+
 <!DOCTYPE html>
 <!-- resultPage.php -->
 <html>
@@ -23,8 +61,8 @@
       <div class="layout">
         <div class="doc w-100" style="overflow-y: auto;">
           <div class="header">
-            <header>
-              <h1>2020/2021 Entrance Examination</h1>
+            <header> 
+              <h1><?php echo  $examName; ?></h1>
               <h3>Candidate's Result</h3>
               <div class="avatar">
                 <img class="avatar-img" src="<?php echo base_url(); ?>logo/default-profile.svg" />
@@ -43,17 +81,17 @@
             <h2>Candidate's Information</h2>
             <div class="data">
               <div class="table-head">
-                Registration Number: 2020/023
+                Registration Number: <?php echo $reg_num;?>
               </div>
               <table>
                 <tbody>
                   <tr>
                     <td>Name</td>
-                    <td>Akinola David</td>
+                    <td><?php echo $Candidatename; ?></td>
                   </tr>
                   <tr>
                     <td>Gender</td>
-                    <td>Male</td>
+                    <td><?php echo $gender; ?></td>
                   </tr>
                   <tr>
                     <td>Group</td>
@@ -71,27 +109,62 @@
                 <tbody>
                   <tr>
                     <td>Test Name:</td>
-                    <td>2020/2021 ENTRANCE EXAMINATION</td>
+                    <td><?php echo  $examName; ?></td>
                   </tr>
-                  <tr>
-                    <td>Test Question Set</td>
-                    <td>130</td>
+                  <tr> 
+                    <td>Total Question Set</td>
+                    <td><?php echo $totalQuestion;  ?></td>
                   </tr>
                   <tr>
                     <td>Maximum Score Obtainable</td>
-                    <td>130</td>
+                    <td><?php echo  $ScoreObtainable; ?></td>
                   </tr>
                   <tr>
                     <td>Time Allocated</td>
-                    <td>45mins</td>
+                    <td><?php echo $timeAllocated; ?> (mins)</td>
                   </tr>
                   <tr>
                     <td>Date/Time Conducted</td>
-                    <td>10:02am - Saturday, 21st March, 2020</td>
+                    <td><?php echo  $TimeConducted; ?></td>
+                    <!-- <td>10:02am - Saturday, 21st March, 2020</td> -->
                   </tr>
                   <tr>
                     <td>Time Spent</td>
                     <td>44mins</td>
+                  </tr>
+
+                  <tr>
+                    <td>Cummulative Pass Mark</td>
+                    <td><?php echo round($CummulativePassMark,0) ; ?> %</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="data">
+              <div class="table-head">
+                CBT Score Analysis
+              </div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Test Name:</td>
+                    <td><?php echo  $examName; ?></td>
+                  </tr>
+                  <?php
+                   foreach ($count_course as $key => $subjects) {
+                   foreach ($score_per_subject as $key => $row) {
+                   if ($subjects['subject'] == $row['subject']) {
+                   echo'<tr> <td>'. $subjects['subject']." &nbsp;&nbsp;</td><td>&nbsp;&nbsp; ".$row['COUNT(*)']." / ".$subjects['COUNT(*)']."</td></tr>"; 
+                   } else{
+                   echo '<tr> <td>'.$subjects['subject']." &nbsp;&nbsp;</td><td>&nbsp;&nbsp; "." 0/ ".$subjects['COUNT(*)']."</td></tr>"; 
+                    }
+                  } 
+                }
+                  ?>
+                  <tr>
+                    <td>Cummulative CBT Score</td>
+                    <td>&nbsp;&nbsp;&nbsp;<?php echo round($CummulativePassMark,0) ; ?> %</td>
                   </tr>
                 </tbody>
               </table>

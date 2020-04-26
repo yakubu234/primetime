@@ -58,7 +58,7 @@
                                                     <td>'.$sn.'</td>
                                                     <td><img src="'.base_url().'Student_Pic/'.$val["img"].'" alt="" class="rounded" style="width: 70px;height:60px;"></td>
                                                     <td>'.$val["reg_num"].' </td>
-                                                    <td>'.$val["surname"]." ".$val["middlename"]." ".$val["middlename"].'</td>
+                                                    <td>'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'</td>
                                                     <td>'.$val["phone"].'</td>
                                                     <td>'.$val["time"].'</td>
                                                 </tr>';$sn++;

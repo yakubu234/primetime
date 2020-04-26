@@ -165,7 +165,12 @@ input[type=checkbox]:checked + label:before {
                             </li>
 
                             <li class="has-submenu">
-                                <a href="<?php echo base_url('Setting_in_Exam') ?>"><i class="mdi mdi-settings"></i>Settings</a>
+                                <a href="#"><i class="mdi mdi-settings"></i>Settings</a>
+                                <ul class="submenu">
+                                    <li><a href="<?php echo base_url('Setting_in_Exam') ?>">Modify Exam</a></li>
+                                    <li><a href="<?php echo base_url('Show_Student_Registered');?>">Drop Exam History</a></li>
+                                    <li><a href="<?php echo base_url('Show_Student_Registered');?>">Add Subject</a></li>
+                                </ul>
                             </li>
 
                             <li class="has-submenu">

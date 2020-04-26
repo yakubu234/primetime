@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'Usr';
 $route['Fpass'] = 'Usr/forgotpass';
+$route['send_theory_now'] = 'Usr/send_theory_now';
 $route['Login'] = 'Usr/Admin';
 $route['Dashboard_Display'] = 'Usr/Dashboard';
 $route['Update_exam_Now'] = 'Usr/Updae_exam_Now_controller';

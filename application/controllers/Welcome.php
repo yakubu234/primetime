@@ -167,18 +167,19 @@ function __construct(){
             );
     }
     $key = 'reg_num';
-    $array = $data;
+    // $array = $data;
     $eid = $this->session->userdata('eid');$reg_num = $this->session->userdata('reg_num');
-     $result = $this->removeElementWithValue($array,$key,$eid,$reg_num);
+     // $result = $this->removeElementWithValue($array,$key,$eid,$reg_num);
       $get_count_return = $this->_getReal_right_wrong_user_answer($eid,$data);
      $get_count_return_correct = $get_count_return['correct_count'];
      $get_count_return_wrong = $get_count_return['wrong_count'];
-     if (empty($result)) {
-         $this->session->set_flashdata('success', 'Exam has been submitted before');
-       $this->load->view('student/Header');
-              $this->load->view('student/Show_Exam_result');
-              $this->load->view('student/footer');
-     }else{
+     // if (empty($result)) {
+     //     $this->session->set_flashdata('success', 'Exam has been submitted before');
+     //   $this->load->view('student/Header');
+     //          $this->load->view('student/Show_Exam_result');
+     //          $this->load->view('student/footer');
+     // }else{
+     $result = $data;
       $result = $this->_Dump_Information_($result,$eid,$reg_num,$get_count_return_correct,$get_count_return_wrong);
         if ($result) {
               $this->session->set_userdata('eid',$eid);
@@ -195,7 +196,7 @@ function __construct(){
               $this->load->view('student/Show_Exam_result');
               $this->load->view('student/footer');
      }
-   }
+   // }
      
     }
 

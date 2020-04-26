@@ -57,7 +57,10 @@
                                                     <td>'.$val->exam_name.' </td>
                                                     <td>'.$val->reg_num.' </td>
                                                     <td>'.$val->name.'</td>
-                                                    <td>'.$val->theory.'</td>
+                                                    <td>
+                                                    <div class="row" >
+                                                    <input id="get_id" type="hidden"  value="'.$val->id.'"><input id="eid" type="hidden"  value="'.$val->eid.'"> &nbsp;&nbsp;<input type="text" name="theory" value="'.$val->theory.'" class="col-sm-4 form-control" id="theory_score" />&nbsp;&nbsp;<button type="submit" class="btn btn-success waves-effect waves-light" id="Reg_val"><i class="fas fa-check" ></i></button>&nbsp;&nbsp;<button type="button" class="btn btn-primary waves-effect waves-light"><i class="fas fa-times" ></i></button>
+                                                    </div></td>
                                                 </tr>';
                                                 }
                                                }else{
@@ -88,5 +91,25 @@
 
         </div>
         <!-- page wrapper end -->
-
+<script>
+    $(document).ready(function(){
+        $('#Reg_val').click(function(){
+            // e.preventDefault();
+            var theory = $("#theory_score").val();;
+            var Userid= $("#get_id").val();
+            var Userid= $("#eid").val();
+            
+              $.ajax({
+                        
+                        method: 'POST',
+                        url: '<?php echo base_url() ?>send_theory_now',
+                        data: {theory:theory,Userid:Userid,eid:eid},
+                        dataType: 'json',
+                        success: function(response){
+alert('data updated'); 
+                        }
+                    });
+        });
+    });
+</script>
         <!-- Footer -->
