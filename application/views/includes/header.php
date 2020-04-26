@@ -169,7 +169,7 @@ input[type=checkbox]:checked + label:before {
                                 <ul class="submenu">
                                     <li><a href="<?php echo base_url('Setting_in_Exam') ?>">Modify Exam</a></li>
                                     <li><a href="<?php echo base_url('Show_Student_Registered');?>">Drop Exam History</a></li>
-                                    <li><a href="<?php echo base_url('Show_Student_Registered');?>">Add Subject</a></li>
+                                    <li><a href="<?php echo base_url('Add_subject_to_database');?>">Add Subject</a></li>
                                 </ul>
                             </li>
 
@@ -315,7 +315,7 @@ input[type=checkbox]:checked + label:before {
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         </div>
                                                         <div class="modal-body">
-                                                         <form action="<?php echo base_url('View_Candidate_For_Exam_Search') ?>" method="POST" >
+                                                         <form action="<?php echo base_url('Delete_exam_') ?>" method="POST" >
                                         <div class="row">
                                         <div class="form-group col-sm-12">
                                             <label class="control-label">Select Exam Title</label>
@@ -555,3 +555,43 @@ input[type=checkbox]:checked + label:before {
                                                 $(".new_password").toggle(this.checked);
                                               });
                                             </script>
+
+
+                                            <!-- add admin -->
+        <div class="modal fade bs-example-modal-centeraadmin_subject" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Add New Subject</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('Add_subject_to_database') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label>Subject Title</label>
+                                            <div>
+                                                <input data-parsley-type="alphanum" type="text"
+                                                        class="form-control" required name="subjectname" 
+                                                        placeholder="Enter Subject Title"/>
+                                            </div>
+                                        </div>
+
+                                         
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Add Subject
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- add admin -->

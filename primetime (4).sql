@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2020 at 02:24 PM
+-- Generation Time: Apr 26, 2020 at 08:04 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -43,8 +43,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `name`, `email`, `username`, `password`, `type`, `date`) VALUES
-(1, 'yakubu abiola', '', 'admin', 'admin123', '1', '2020-04-16 17:15:24'),
-(2, 'adewale jumoke tade', 'tade@tade.com', 'usernew', 'tadetade', '', '2020-04-20 16:49:05');
+(1, 'yakubu abiola', 'faridat@gmail.com', 'admin', 'admin123', '1', '2020-04-26 16:11:43');
 
 -- --------------------------------------------------------
 
@@ -72,7 +71,7 @@ CREATE TABLE `exam` (
 --
 
 INSERT INTO `exam` (`id`, `eid`, `title`, `correct`, `wrong`, `total`, `time`, `passmark`, `start`, `end`, `status`, `reg_time`) VALUES
-(26, '5e950dcf42c62', 'This Is Exam 1', '1', '0', '4', '60', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11', 'Enable', 'April 14, 2020 03:11:43 AM');
+(26, '5e950dcf42c62', 'This Is Exam 1', '1', '0', '4', '60', '20.00', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11', '', 'April 23, 2020 06:44:29 AM');
 
 -- --------------------------------------------------------
 
@@ -105,9 +104,10 @@ CREATE TABLE `exam_ready` (
 --
 
 INSERT INTO `exam_ready` (`id`, `reg_num`, `name`, `eid`, `exam_name`, `scoreObtainable`, `totalQuestion`, `duration`, `theory`, `score`, `correct`, `wrong`, `WrongScore`, `time_remaining`, `status`, `startDate`, `endDate`) VALUES
-(8, '2020/230', 'adelaja gabriel oluwatosin2020/30', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '4', '0', '1587396838', 'Ongoing', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
-(15, '20/2016', 'Sunday osunbo osunbo solademi', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '20', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
-(16, '21/2016', 'john ogbu adewale', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '13', '', '', '', '', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11');
+(8, '2020/230', 'adelaja gabriel oluwatosin2020/30', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '4', '0', '1587914635', 'Ongoing', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
+(20, '20/2016', 'Sunday osunbo osunbo solademi', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '0', '0', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
+(21, '21/2016', 'john ogbu adewale', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '0', '0', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11'),
+(22, '2020/001', 'Yakubu abiola igbayilola', '5e950dcf42c62', 'This Is Exam 1', '4', '4', '60', '', '0', '0', '0', '0', '', '', 'Tuesday 14 April 2020 - 02:11', '22/04/2020 02:11');
 
 -- --------------------------------------------------------
 
@@ -171,9 +171,10 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `surname`, `firstname`, `middlename`, `reg_num`, `gender`, `phone`, `img`, `time`) VALUES
-(65, 'Sunday osunbo', 'osunbo', 'solademi', '20/2016', '', '08030960928', 'done.jpg', '2020-04-16 17:15:25'),
-(66, 'john', 'ogbu', 'adewale', '21/2016', '', '09090293023', 'dummy.png', '2020-04-16 17:15:25'),
-(67, 'adelaja', 'gabriel', 'oluwatosin2020/30', '2020/230', '', '8030980987', 'adewale.png', '2020-04-16 17:15:25');
+(65, 'Sunday osunbo', 'osunbo', 'solademi', '20/2016', 'male', '08030960928', 'done.jpg', '2020-04-25 14:50:11'),
+(66, 'john', 'ogbu', 'adewale', '21/2016', 'female', '09090293023', 'dummy.png', '2020-04-25 14:50:16'),
+(67, 'adelaja', 'gabriel', 'oluwatosin2020/30', '2020/230', 'male', '8030980987', 'adewale.png', '2020-04-25 14:50:19'),
+(68, 'Yakubu', 'abiola', 'igbayilola', '2020/001', 'Female', '0909089098', '1c70a2e08a228ee30f9afee0b415164a.jpg', '2020-04-26 15:42:24');
 
 -- --------------------------------------------------------
 
@@ -203,10 +204,18 @@ CREATE TABLE `student_history` (
 --
 
 INSERT INTO `student_history` (`id`, `eid`, `qns`, `qid`, `reg_num`, `user_answer`, `user_answer_id`, `correct_id`, `correct_view`, `subject`, `ans`, `qid_sn`, `sn`, `time`) VALUES
-(23, '5e950dcf42c62', '', '5e951fe4c3063', '2020/230', '', '5e951fe4c3064', '5e951fe4c3065', '', 'mathematics', '5e951fe4c3064', '9', '1', '2020-04-20 01:09:08'),
-(24, '5e950dcf42c62', '', '5e951fe4c3053', '2020/230', '', '5e951fe4c3059', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3059', '8', '2', '2020-04-20 01:09:08'),
+(23, '5e950dcf42c62', '', '5e951fe4c3063', '2020/230', '', '5e951fe4c3064', '5e951fe4c3065', '', 'yoruba', '5e951fe4c3064', '9', '1', '2020-04-25 13:13:57'),
+(24, '5e950dcf42c62', '', '5e951fe4c3053', '2020/230', '', '5e951fe4c3058', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3059', '8', '2', '2020-04-25 13:14:08'),
 (25, '5e950dcf42c62', '', '5e951f163f2a4', '2020/230', '', '5e951f163f2a9', '5e951f163f2a8', '', 'mathematics', '5e951f163f2a9', '6', '3', '2020-04-20 01:09:08'),
-(26, '5e950dcf42c62', '', '5e951f163f2ba', '2020/230', '', '5e951f163f2bc', '5e951f163f2bd', '', 'mathematics', '5e951f163f2bc', '7', '4', '2020-04-20 01:09:08');
+(26, '5e950dcf42c62', '', '5e951f163f2ba', '2020/230', '', '5e951f163f2bc', '5e951f163f2bd', '', 'english', '5e951f163f2bc', '7', '4', '2020-04-25 13:13:49'),
+(183, '5e950dcf42c62', '', '5e951fe4c3053', '2020/001', '', '5e951fe4c3057', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3057', '8', '1', '2020-04-26 15:50:22'),
+(184, '5e950dcf42c62', '', '5e951fe4c3063', '2020/001', '', '5e951fe4c3065', '5e951fe4c3065', '', 'mathematics', '5e951fe4c3065', '9', '2', '2020-04-26 15:50:22'),
+(185, '5e950dcf42c62', '', '5e951f163f2a4', '2020/001', '', '5e951f163f2a8', '5e951f163f2a8', '', 'mathematics', '5e951f163f2a8', '6', '3', '2020-04-26 15:50:22'),
+(186, '5e950dcf42c62', '', '5e951f163f2ba', '2020/001', '', '5e951f163f2be', '5e951f163f2bd', '', 'mathematics', '5e951f163f2be', '7', '4', '2020-04-26 15:50:22'),
+(187, '5e950dcf42c62', '', '5e951fe4c3063', '2020/001', '', '5e951fe4c3065', '5e951fe4c3065', '', 'mathematics', '5e951fe4c3065', '9', '1', '2020-04-26 15:58:18'),
+(188, '5e950dcf42c62', '', '5e951f163f2ba', '2020/001', '', '5e951f163f2bc', '5e951f163f2bd', '', 'mathematics', '5e951f163f2bc', '7', '2', '2020-04-26 15:58:18'),
+(189, '5e950dcf42c62', '', '5e951f163f2a4', '2020/001', '', '5e951f163f2a9', '5e951f163f2a8', '', 'mathematics', '5e951f163f2a9', '6', '3', '2020-04-26 15:58:18'),
+(190, '5e950dcf42c62', '', '5e951fe4c3053', '2020/001', '', '5e951fe4c3058', '5e951fe4c3058', '', 'mathematics', '5e951fe4c3058', '8', '4', '2020-04-26 15:58:18');
 
 -- --------------------------------------------------------
 
@@ -295,7 +304,7 @@ ALTER TABLE `exam`
 -- AUTO_INCREMENT for table `exam_ready`
 --
 ALTER TABLE `exam_ready`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `question`
@@ -307,19 +316,19 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `student_history`
 --
 ALTER TABLE `student_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

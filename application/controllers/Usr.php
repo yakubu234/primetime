@@ -435,6 +435,42 @@ function __construct(){
 		$this->load->view('includes/footer');
 	}
 
+  public function Delete_exam_Controller(){
+     $eid = $this->input->post('exam');
+   $this->db->where('exam.eid',$eid);
+              $this->db->delete('admin');
+              if ($this->db->affected_rows() > 0 ) {
+               $this->session->set_flashdata('success', 'Exam Deleted');
+              redirect(base_url() . 'Dashboard_Display');
+              }else{
+               $this->session->set_flashdata('errors', 'Unable to delete Exam');
+           redirect(base_url() . 'Dashboard_Display');
+                 }
+  }
+
+  public function Add_subject_to_database_controller(){
+    if ($this->input->post()) {
+      $subject = $this->input->post('subjectname');
+      $data = array(
+        'name' => $subject, 
+        'digit' => '0', 
+      );
+      $res = $this->db->insert('subject',$data);
+      $usage['courses'] =  $this->db->get_where('subject')->result();
+    $this->session->set_userdata('success','You are Viewing Subjects Registered on the database');
+    $this->load->view('includes/header');
+    $this->load->view('admin/add_course',$usage);
+    $this->load->view('includes/footer');
+      # code...
+    }else{
+    $usage['courses'] =  $this->db->get_where('subject')->result();
+    $this->session->set_userdata('success','You are Viewing Subjects Registered on the database');
+    $this->load->view('includes/header');
+    $this->load->view('admin/add_course',$usage);
+    $this->load->view('includes/footer');
+    }
+  }
+
 	public function ShowStudent_Availabe_for_Exam(){
 		if($this->input->post()){
 			$this->form_validation->set_rules('exam', 'Please Select Exam Name / Title', 'required');
@@ -460,7 +496,7 @@ function __construct(){
 		  $count = count($this->input->post('name'));
 		 for($i=0; $i<$count; $i++) {           
 		    $data[] = array(
-            'reg_num'=>$this->input->post('validate')[$i],
+            'reg_num'=>$this->input->post('id')[$i],
             'name'=>$this->input->post('name')[$i],
             'eid'=>$this->input->post('exam'),
             'exam_name'=>$title,
@@ -477,16 +513,8 @@ function __construct(){
 		 } 
      $key = 'reg_num';
      $array = $data;
-     $remove_if_exist = $this->removeElementWithValue($array,$key,$eid);
-     if (!empty($remove_if_exist)) {
-     $array = $remove_if_exist;
-     // $result = $this->removeElementWithEmptyRegValue($array,$key,$eid);
-     var_dump($array);
-     // var_dump($result);
-     die();
-     }else{
-      $result = $remove_if_exist;
-     }
+     $result = $this->removeElementWithValue($array,$key,$eid);
+    
      if (empty($result)) {
          $this->session->set_flashdata('success', 'Student has been Added to Database before');
       $this->ShowStudent_Availabe_for_Specific_Exam($eid);
