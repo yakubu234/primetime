@@ -12,7 +12,6 @@
           <meta name="robots" content="index, follow" />
         <meta content="Yakubu Abiola" name="author" />
         <link rel="shortcut icon" href="<?php echo base_url('logo/school_logo.png') ?>">
-        <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico">
 
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/css/icons.css" rel="stylesheet" type="text/css">

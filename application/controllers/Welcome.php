@@ -77,6 +77,41 @@ function __construct(){
           $this->session->set_userdata('Total_Number',$total);
           $this->session->set_userdata('sn','1');
           $this->session->set_userdata('eid',$eid);
+          $this->session->set_userdata('device','Pc');
+            $this->getrandom();
+        }else{
+
+        }
+  }
+
+  public function Start_Exam_Now_Fresh_mobile(){
+       $eid = $this->input->post('eid');
+       $total = $this->input->post('total');
+       $duration = $this->input->post('duration');
+       $regNum = $this->input->post('regNum');
+       $start = $this->input->post('start');
+       if ($start == "start") {
+         $data = array(
+          'time_remaining' => time(),
+          'status' =>'Ongoing',
+        );
+       }else{
+         $data = array(
+          'status' =>'Ongoing',
+        );
+       }
+       $this->db->where('eid', $eid);
+       $this->db->where('reg_num', $regNum);
+        $res = $this->db->update('exam_ready', $data);
+        if ($res == true) {
+          $get = $this->db->get_where('exam_ready',array('reg_num'=>$regNum))->row();
+          $time_remaining = $get->time_remaining;
+          $this->session->set_userdata('time_remaining',$time_remaining);
+          $this->session->set_userdata('duration',$duration);
+          $this->session->set_userdata('Total_Number',$total);
+          $this->session->set_userdata('sn','1');
+          $this->session->set_userdata('eid',$eid);
+          $this->session->set_userdata('device','Mobile');
             $this->getrandom();
         }else{
 
@@ -86,12 +121,20 @@ function __construct(){
     function getrandom()
         {
            $eid = $this->session->userdata('eid');
+           $device = $this->session->userdata('device');
            $query = "SELECT * FROM question WHERE eid = '$eid' ORDER BY RAND()";
            $query = $this->db->query($query); 
            $usage['Exams_Questions'] =  $query->result();
+           if ($device == 'Mobile') {
+             # code...
+          $this->load->view('student/Header');
+          $this->load->view('student/Show_Exam_mobile',$usage);
+          $this->load->view('student/footer');
+           }else{
           $this->load->view('student/Header');
           $this->load->view('student/Show_Exam',$usage);
           $this->load->view('student/footer');
+        }
       }
 
       function getrandom_with_constraint()

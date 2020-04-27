@@ -438,7 +438,7 @@ function __construct(){
   public function Delete_exam_Controller(){
      $eid = $this->input->post('exam');
    $this->db->where('exam.eid',$eid);
-              $this->db->delete('admin');
+              $this->db->delete('exam');
               if ($this->db->affected_rows() > 0 ) {
                $this->session->set_flashdata('success', 'Exam Deleted');
               redirect(base_url() . 'Dashboard_Display');

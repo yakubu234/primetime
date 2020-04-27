@@ -79,6 +79,7 @@ $route['Register_Student'] = 'Usr/Add_Student';
 $route['Unlock_LockScreen'] = 'Usr/LockScreen';
 $route['Login_Student_'] = 'Welcome/Login_Student_Now';
 $route['Start_Exam_Now'] = 'Welcome/Start_Exam_Now_Fresh';
+$route['Start_Exam_Now_mobile'] = 'Welcome/Start_Exam_Now_Fresh_mobile';
 $route['save_answer_selected'] = 'Welcome/save_answer_selected_now';
 $route['JumpQuestion/(:any)'] = 'Welcome/JumpQuestion_Exam';
 $route['404_override'] = '';

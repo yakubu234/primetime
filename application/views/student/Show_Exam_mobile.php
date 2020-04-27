@@ -1,6 +1,87 @@
 <!-- special css to make a rectanguar radio button  -->
 <!-- Show loading image while my controller execute a function -->
+      <meta id="viewport" name="viewport">
+
+<script type="text/javascript">
+//mobile viewport hack
+(function(){
+
+  function apply_viewport(){
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)   ) {
+
+      var ww = window.screen.width;
+      var mw = 800; // min width of site
+      var ratio =  ww / mw; //calculate ratio
+      var viewport_meta_tag = document.getElementById('viewport');
+      if( ww < mw){ //smaller than minimum size
+        viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
+      }
+      else { //regular size
+        viewport_meta_tag.setAttribute('content', 'initial-scale=1.0, maximum-scale=1, minimum-scale=1.0, user-scalable=yes, width=' + ww);
+      }
+    }
+  }
+
+  //ok, i need to update viewport scale if screen dimentions changed
+  window.addEventListener('resize', function(){
+    apply_viewport();
+  });
+
+  apply_viewport();
+
+}());
+</script>
  <style>
+
+#landscape { display:block; }
+
+@media only screen and (orientation:portrait){
+
+  #landscape {
+
+   height: 100vw;
+
+   -webkit-transform: rotate(90deg);
+
+   -moz-transform: rotate(90deg);
+
+   -o-transform: rotate(90deg);
+
+   -ms-transform: rotate(90deg);
+
+   transform: rotate(90deg);
+
+  }
+
+}
+
+@media only screen and (orientation:landscape){
+
+  #landscape {
+
+  -webkit-transform: rotate(0deg);
+
+  -moz-transform: rotate(0deg);
+
+  -o-transform: rotate(0deg);
+
+  -ms-transform: rotate(0deg);
+
+  transform: rotate(0deg);
+
+   }
+}
+
+        .rat {
+   display: block;
+}
+
+.cat {
+   display: none;
+}
+
+
+        
   /* [THE LOADING SPINNER] */
 
 #overlay {
@@ -76,7 +157,7 @@
 
 .play button{
     background: green;
-    width:40px;
+    width:20px;
     /*padding: 5px;*/
     margin:3px;
     color: white
@@ -98,20 +179,13 @@
             <br/>
             <p>Exam is Starting in <span id="countdown_by_me"></span> <br>Question Loading...</p>
         </div>
-        <div class="account-pages"></div>
    
         <!-- Begin page -->
-        <div class="m-t-10 col-sm-12">
+        <div class="m-t-10 col-sm-12" id="landscape">
                   <!-- [THE SPINNER - THIS IS ALL YOU NEED] -->
             <div class="card" style="background-color:#DCDCDC;">
                 <div class="card-block">
-                    <div class="alert alert-success alert-dismissible fade show col-sm-12" role="alert" style="margin-bottom: -15px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <p class="text-center" style="font-size: 20px;"><b><?php 
-                                                   echo '<span > Full Name: &nbsp;&nbsp;&nbsp;</span>'.$fullname = $this->session->userdata('surname')." ".$this->session->userdata('firstname')." ".$this->session->userdata('middlename'); echo '<span > &nbsp;&nbsp;&nbsp;Registration Number: &nbsp;&nbsp;&nbsp;</span>'.$reg_num = $this->session->userdata('reg_num');?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power"></i> </a> </b></p> 
-                    </div>
+                  <br>
                             <div class="col-md-12">
                             <div class="card card-body">
                                 <?php
@@ -151,7 +225,8 @@
                 var countdownTimer = setInterval(\'secondPassed()\', 1000);
                 </script>';
                 ?>
-                <button class="btn btn-primary waves-effect waves-light col-sm-3 text-center" style="margin: 0px auto;"> <b>Time Left : <span id="countdown"></span></b></button>                                
+                <div class="row" style="margin: 0px auto;">
+                <button class="btn btn-primary waves-effect waves-light col-sm-9 text-center" > <b>Time Left : <span id="countdown"></span></b></button>    &nbsp;&nbsp;<a class="btn btn-primary" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power"></i> </a></div>                            
                  <div class="row col-sm-12">
                                 <?php
                                 echo '<form action="'.base_url('save_answer_selected?q=quiz&step=2&eid=' . $eid . '&n=12xooiei29&t=' . $total).'"  method="POST" id="form">
@@ -220,7 +295,7 @@
              $sn = $Total_now-1;
             echo '<div class="col-sm-12 cont" id="question'.$Total_now.'" style="margin-left:65px;margin-top:20px;">
                                 <p class="questions" id="qname'.$Total_now.'"></p>
-                                <div class="row"><tr><td><div class="col-sm-1">' . $Total_now . '</div> : &nbsp;&nbsp;</td><td><div class="col-sm-11">'.$qns.'</div></td></tr></div>';
+                                <div class="row"><tr><td><div class="col-sm-1" >' . $Total_now . '</div> : &nbsp;&nbsp;</td><td><div  class="col-sm-11">'.$qns.'</div></td></tr></div>';
                                 echo '<div class="col-sm-12" ><input type="hidden" value="'.$subject.'" name="subject[]" />
                                     <input type="hidden" value="'.$Total_now.'" name="current[]" />
                                     <input type="hidden" value="'.$qid.'" name="qid[]" />
@@ -254,7 +329,7 @@
 
                 <!-- card button  -->
             <!-- <div class="card"> -->
-                <div class="card-block" >
+                <div class="card-block cat" >
                     <div class="col-md-12">
                             <div class="card card-body" style="background-color:#DCDCDC;">
                                 <!-- options button  -->
@@ -358,6 +433,6 @@ $('.jump').on('click', function(){
     }
 
 })(window);
-// alert before reload or refresh of page
+
             </script>
 <!-- to disable backspace ended -->
