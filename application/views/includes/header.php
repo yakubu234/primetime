@@ -168,7 +168,7 @@ input[type=checkbox]:checked + label:before {
                                 <a href="#"><i class="mdi mdi-settings"></i>Settings</a>
                                 <ul class="submenu">
                                     <li><a href="<?php echo base_url('Setting_in_Exam') ?>">Modify Exam</a></li>
-                                    <li><a href="<?php echo base_url('Show_Student_Registered');?>">Drop Exam History</a></li>
+                                    <li><a data-toggle="modal" data-target=".bs-example-modal-center-Drop ">Drop Exam History</a></li>
                                     <li><a href="<?php echo base_url('Add_subject_to_database');?>">Add Subject</a></li>
                                 </ul>
                             </li>
@@ -557,7 +557,7 @@ input[type=checkbox]:checked + label:before {
                                             </script>
 
 
-                                            <!-- add admin -->
+                                            <!-- add new subject -->
         <div class="modal fade bs-example-modal-centeraadmin_subject" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -594,4 +594,48 @@ input[type=checkbox]:checked + label:before {
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
-        <!-- add admin -->
+        <!-- add new subject -->
+
+
+
+         <!-- Drop Exam History -->
+        <div class="modal fade bs-example-modal-center-Drop" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">Drop Exam History Panel</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('Drop_history') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label class="control-label">Select Exam Title</label>
+                                            <select class="form-control select2" name="exam" required="">
+                                                <option selected="" disabled="" >Choose Exam Title</option>
+                                                <?php
+                                                $get_data=$this->User_Model->get_table_data();
+                                                    foreach($get_data as $val){
+                                              echo" <option value='".$val->eid."'>". $val->title."</option>";
+                                               } 
+                                             ?>                                                
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                    Delete
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- Drop Exam History-->

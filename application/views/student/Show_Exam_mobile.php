@@ -174,7 +174,7 @@
     </style>
        <!-- special css to make a rectanguar radio button  -->
         <!-- Background -->
-         <div id="overlay" style="display:none;">
+         <div id="overlay">
             <div class="spinner"></div>
             <br/>
             <p>Exam is Starting in <span id="countdown_by_me"></span> <br>Question Loading...</p>
@@ -193,7 +193,7 @@
                                 $sn= $this->session->userdata('sn');
                                 $eid = $this->session->userdata('eid');
                                 $total = $this->session->userdata('Total_Number');
-                                 $remaining = (((0.05 + $this->session->userdata('duration'))* 60) - ((time() - $this->session->userdata('time_remaining'))));
+                                 $remaining = (((0.10 + $this->session->userdata('duration'))* 60) - ((time() - $this->session->userdata('time_remaining'))));
             echo '<script>
             var seconds = ' . $remaining . ' ;
             function end(){
@@ -355,7 +355,7 @@
 
 <!-- to disable backspace -->
 <script>
-    var timeleft = 5;
+    var timeleft = 6;
 var downloadTimer = setInterval(function(){
   if(timeleft <= 0){
     clearInterval(downloadTimer);
@@ -366,7 +366,7 @@ var downloadTimer = setInterval(function(){
   timeleft -= 1;
 }, 1000);
     // diplay the loader for 5 seconds 
-    $('#overlay').fadeIn().delay(5000).fadeOut();
+    $('#overlay').fadeIn().delay(6000).fadeOut();
 //divs to show by qquestion
 $('.cont').css('display','none');
 $('#question'+1).css('display','block');

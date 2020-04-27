@@ -4,7 +4,72 @@
            $eid = $this->session->userdata('Exam_id');
            $Exam_name = $this->session->userdata('Exam_name');
         ?>
-        <!-- page wrapper start -->
+         <!-- page wrapper start -->
+         <style>
+  /* [THE LOADING SPINNER] */
+
+#overlay {
+  background-color: black;
+  color: #666666;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
+  text-align: center;
+  padding-top: 18%;
+  /*opacity: .80;*/
+}
+
+#overlay p{
+    color:white;
+    font-size: 20px;
+}
+
+
+.spinner {
+    margin: 0 auto;
+    height: 64px;
+    width: 64px;
+    animation: rotate 0.8s infinite linear;
+    border: 5px solid firebrick;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+  
+#overlay {
+  background: black;
+  color: #666666;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
+  text-align: center;
+  padding-top: 30%;
+  /*opacity: .80;*/
+}
+}
+</style>
+<div id="overlay">
+            <div class="spinner"></div>
+            <br/>
+            <p>Question Interface <span id="countdown_by_me"></span> <br>Loading...</p>
+        </div>
         <div class="wrapper">
             <div class="page-title-box">
                 <div class="container-fluid">
@@ -44,10 +109,9 @@
                                             <select class="form-control select2" name="subject" required="">
                                                 <option selected="" disabled="" >Choose Subject</option>
                                                 <?php
-                                                var_dump($subjects);
                                                 if ($subjects) {
                                                     foreach ($subjects as $row){
-                                              echo" <option>". $row['name']."</option>";
+                                              echo" <option value='". $row['name']."' >". $row['name']."</option>";
                                              }
                                                     } 
                                                     ?>                         
@@ -125,3 +189,20 @@
 
         </div>
         <!-- page wrapper end -->
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script>
+    // autoload form
+
+    var timeleft = 10;
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("countdown_by_me").innerHTML = " ";
+  } else {
+    document.getElementById("countdown_by_me").innerHTML = timeleft + " seconds";
+  }
+  timeleft -= 1;
+}, 1000);
+    // diplay the loader for 5 seconds 
+    $('#overlay').fadeIn().delay(10000).fadeOut();
+        </script>

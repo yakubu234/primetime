@@ -159,7 +159,7 @@ function __construct(){
 
             $query = $this->db->query("SELECT * FROM exam WHERE eid = '$eid' ");
         $result['Exam_random'] = $query->result_array();
-          $this->session->set_userdata('success','Exam Has just been Updated');
+          $this->session->set_flashdata('success','Exam Has just been Updated');
           $this->load->view('includes/header');
           $this->load->view('admin/SettingsExam',$result);
           $this->load->view('includes/footer');
@@ -171,7 +171,7 @@ function __construct(){
     }else{      
         $query = $this->db->query("SELECT * FROM exam ORDER BY id DESC LIMIT 1");
         $result['Exam_random'] = $query->result_array();
-          $this->session->set_userdata('success','Sorry Exam Failed to Update Due to Error 401');
+          $this->session->set_flashdata('success','Sorry Exam Failed to Update Due to Error 401');
           $this->load->view('includes/header');
           $this->load->view('admin/SettingsExam',$result);
           $this->load->view('includes/footer');
@@ -251,14 +251,18 @@ function __construct(){
            $query = $this->db->query($query);
            $usage['score_per_subject'] = $query->result_array();
           $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$eid))->result();
-          $this->session->set_userdata('success','You are viewing BroadSheet Result of a Particular Exam');
+          $this->session->set_flashdata('success','You are viewing BroadSheet Result of a Particular Exam');
           $this->load->view('admin/resultPage',$usage); 
   }
 
 	public function Add_Question(){
 		if($this->input->post()){
 			$eid = $this->input->post('qid');
-      // $eid = $_GET['q'];
+      $this->form_validation->set_rules('subject', 'Exam subject', 'required');
+       if ($this->form_validation->run() == FALSE) {
+        $this->session->set_flashdata('errors', validation_errors());
+        redirect(base_url() . 'You_Are_Adding_Question');
+      } else {
 		$data = array();
 		 $count = count($this->input->post('question'));
 		 for($i=0; $i<$count; $i++) {
@@ -313,10 +317,11 @@ function __construct(){
 		 	$this->DisplayExamDetails($eid);
     		// redirect(base_url('You_Are_Viewing_Question').$eid);
 		 }else{
-		 	echo "errors";
-		 	die;
+		 	 $this->session->set_flashdata('errors','Exam has not been added please try again');
+        redirect(base_url() . 'You_Are_Adding_Question');
 		 }
-		}else{
+		}
+  }else{
 		// $data['subjects']=$this->db->get_where('subject',array('digit'=>0))->result_array();
 		$query = $this->db->get('subject');
 		$usage['subjects'] =  $query->result_array();
@@ -364,6 +369,15 @@ function __construct(){
 
 	public function Add_Question_Old_Exam(){
 		if($this->input->post()){
+      $this->form_validation->set_rules('subject', 'Exam subject', 'required');
+       if ($this->form_validation->run() == FALSE) {
+        $this->session->set_flashdata('errors', validation_errors());
+        $query = $this->db->get('subject');
+      $usage['subjects'] =  $query->result_array();
+        $this->load->view('includes/header');
+    $this->load->view('admin/Question_toOld_Exam',$usage);
+    $this->load->view('includes/footer');
+      } else {
 			$eid = $_GET['q'];
 			$serial = $_GET['snw'];
 		$data = array();
@@ -420,16 +434,21 @@ function __construct(){
 		 	$this->DisplayExamDetails($eid);
     		// redirect(base_url('You_Are_Viewing_Question').$eid);
 		 }else{
-		 	echo "errors";
-		 	die;
+		 	  $this->session->set_flashdata('errors','Unfortunately Error has occured');
+        $query = $this->db->get('subject');
+      $usage['subjects'] =  $query->result_array();
+        $this->load->view('includes/header');
+    $this->load->view('admin/Question_toOld_Exam',$usage);
+    $this->load->view('includes/footer');
 		 }
+    }
 		}
 	}
 
 	public function ShowStudent(){
 		$query = $this->db->get('student');
 		$usage['student'] =  $query->result_array();
-		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
+		$this->session->set_flashdata('success','You are Viewing Students Registered on the database');
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student',$usage);
 		$this->load->view('includes/footer');
@@ -457,14 +476,14 @@ function __construct(){
       );
       $res = $this->db->insert('subject',$data);
       $usage['courses'] =  $this->db->get_where('subject')->result();
-    $this->session->set_userdata('success','You are Viewing Subjects Registered on the database');
+    $this->session->set_flashdata('success','You are Viewing Subjects Registered on the database');
     $this->load->view('includes/header');
     $this->load->view('admin/add_course',$usage);
     $this->load->view('includes/footer');
       # code...
     }else{
     $usage['courses'] =  $this->db->get_where('subject')->result();
-    $this->session->set_userdata('success','You are Viewing Subjects Registered on the database');
+    $this->session->set_flashdata('success','You are Viewing Subjects Registered on the database');
     $this->load->view('includes/header');
     $this->load->view('admin/add_course',$usage);
     $this->load->view('includes/footer');
@@ -536,12 +555,40 @@ function __construct(){
 		}else{
 		$query = $this->db->get('student');
 		$usage['student'] =  $query->result_array();
-		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
+		$this->session->set_flashdata('success','You are Viewing Students Registered on the database');
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student_For_Exam',$usage);
 		$this->load->view('includes/footer');
 		}
 	}
+
+  public function add_by_category_controller(){
+    if ($this->input->post()) {
+      $category = $this->input->post('Category');
+      $usage['student'] =$this->db->get_where('student',array('Category'=>$category))->result_array();
+    $this->session->set_flashdata('success','You are Viewing Students Registered on the database');
+    $this->load->view('includes/header');
+    $this->load->view('admin/Student_For_Exam',$usage);
+    $this->load->view('includes/footer');
+    }else{
+       $this->session->set_flashdata('errors', 'Unable to fetch student category');
+           redirect(base_url() . 'Register_Student');
+    }
+  }
+
+  public function Drop_history_Select_exam_by_id(){
+    if ($this->input->post()) {
+      $exam = $this->input->post('exam');
+      $usage['Exam'] =$this->db->get_where('exam_ready',array('eid'=>$exam))->result_array();
+    $this->session->set_flashdata('success','You are Viewing Students that has taken a particular exam');
+    $this->load->view('includes/header');
+    $this->load->view('admin/Delete_student_now',$usage);
+    $this->load->view('includes/footer');
+    }else{
+       $this->session->set_flashdata('errors', 'Unable to fetch student category');
+           redirect(base_url() . 'Dashboard_Display');
+    }
+  }
 
   function removeElementWithValue($array, $key,$eid ){
     $q ="SELECT * FROM exam_ready  WHERE eid='$eid'";
@@ -571,7 +618,7 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 
 	public function ShowStudent_Availabe_for_Specific_Exam($eid){
 		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
-		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
+		$this->session->set_flashdata('success','You are Viewing Students Registered on the database');
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student_For_Exam_specific',$usage);
 		$this->load->view('includes/footer');
@@ -581,7 +628,7 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 		if ($this->input->post()) {
 			$eid = $this->input->post('exam');
 		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
-		$this->session->set_userdata('success','You are Viewing Students Registered on the database');
+		$this->session->set_flashdata('success','You are Viewing Students Registered on the database');
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student_For_Exam_specific',$usage);
 		$this->load->view('includes/footer');
@@ -622,6 +669,40 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
         }
   }
 
+
+  public function Student_Delete_Now_controller_Exam(){
+            $id = $this->uri->segment(3);
+             $get = $this->db->get_where('exam_ready',array('id'=>$id))->row();
+             $reg_num = $get->reg_num;
+             $eid = $get->eid;
+              
+               $res = $this->db->delete('student_history', array('student_history.reg_num' => $reg_num, 'student_history.eid' => $eid));
+               $data_exam_ready = array(
+                'score' => "0",
+                'correct' => "0",
+                'wrong' => '0',
+                'status' =>"" ,
+              );
+               $this->db->where('exam_ready.reg_num', $reg_num);
+               $this->db->where('exam_ready.eid', $eid);
+               $result = $this->db->update('exam_ready', $data_exam_ready);   
+              if ($result == true && $res == true ) {
+               $this->session->set_flashdata('success', 'Student  History has been Deleted');
+                    $this->shoq_student_after_delete($eid);
+              }else{
+               $this->session->set_flashdata('errors', 'Unable to delete Student History');
+               $this->shoq_student_after_delete($eid);
+        }
+  }
+
+  public function shoq_student_after_delete($eid){
+      $usage['Exam'] =$this->db->get_where('exam_ready',array('eid'=>$eid))->result_array();
+    $this->session->set_flashdata('success','You are Viewing Students that has taken a particular exam');
+    $this->load->view('includes/header');
+    $this->load->view('admin/Delete_student_now',$usage);
+    $this->load->view('includes/footer');
+  }
+
   public function send_theory_now(){
     $eid = $this->input->post('eid');
       $data = array(
@@ -633,7 +714,7 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 
         $eid = $this->input->post('exam');
     $usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
-    $this->session->set_userdata('success','You are Viewing Students Registered on the database');
+    $this->session->set_flashdata('success','You are Viewing Students Registered on the database');
     $this->load->view('includes/header');
     $this->load->view('admin/Student_For_Exam_specific',$usage);
     $this->load->view('includes/footer');
@@ -838,13 +919,13 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
           );
           $insert = $this->db->insert('admin',$data);
           $usage['admin'] =  $this->db->get_where('admin')->result();
-          $this->session->set_userdata('success','New Admin has just been created');
+          $this->session->set_flashdata('success','New Admin has just been created');
           $this->load->view('includes/header');
           $this->load->view('admin/admin_page',$usage);
           $this->load->view('includes/footer');
     }else{
       $usage['admin'] =  $this->db->get_where('admin')->result();
-          $this->session->set_userdata('success','You are viewing admin');
+          $this->session->set_flashdata('success','You are viewing admin');
           $this->load->view('includes/header');
           $this->load->view('admin/admin_page',$usage);
           $this->load->view('includes/footer'); 
@@ -861,19 +942,19 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
            $usage['StudentResult'] =  $query->result();
           $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$exam))->result();
           if ($mode == "BroadSheet") {
-          $this->session->set_userdata('success','You are viewing BroadSheet Result of a Particular Exam');
+          $this->session->set_flashdata('success','You are viewing BroadSheet Result of a Particular Exam');
           $this->load->view('includes/header');
           $this->load->view('admin/BroadSheet',$usage);
           $this->load->view('includes/footer');
           }else{
-             $this->session->set_userdata('success','You are viewing Individuals Result of a Particular Exam');
+             $this->session->set_flashdata('success','You are viewing Individuals Result of a Particular Exam');
           $this->load->view('includes/header');
           $this->load->view('admin/PrintIndividual',$usage);
           $this->load->view('includes/footer');
           }
     }else{
       $usage['admin'] =  $this->db->get_where('admin')->result();
-          $this->session->set_userdata('success','You are viewing admin');
+          $this->session->set_flashdata('success','You are viewing admin');
           $this->load->view('includes/header');
           $this->load->view('admin/admin_page',$usage);
           $this->load->view('includes/footer'); 
@@ -911,14 +992,14 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
       $exam = $this->input->post('exam');
       $query = $this->db->query("SELECT * FROM exam WHERE eid = '$exam'");
         $result['Exam_random'] = $query->result_array();
-          $this->session->set_userdata('success','You are viewing a particular Exam');
+          $this->session->set_flashdata('success','You are viewing a particular Exam');
           $this->load->view('includes/header');
           $this->load->view('admin/SettingsExam',$result);
           $this->load->view('includes/footer');
       }else{
       $query = $this->db->query("SELECT * FROM exam ORDER BY id DESC LIMIT 1");
         $result['Exam_random'] = $query->result_array();
-          $this->session->set_userdata('success','You are viewing a particular Exam');
+          $this->session->set_flashdata('success','You are viewing a particular Exam');
           $this->load->view('includes/header');
           $this->load->view('admin/SettingsExam',$result);
           $this->load->view('includes/footer');

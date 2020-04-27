@@ -192,8 +192,40 @@ function __construct(){
               $this->load->view('student/footer');
 
       }
-
+// <script>alert('Form Submitted Successfully....!!!! ');</script>
     public function save_answer_selected_now(){
+      echo "
+      <style>
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+      </style>
+      <div id='overlay style='background-color: black;
+  color: #666666;position: fixed;height: 100%;width: 100%;z-index: 5000;top: 0;left: 0;float: left;text-align: center;padding-top: 18%;'>
+            <div class='spinner' style='margin: 150px auto 0px; height: 64px; width: 64px; animation: rotate 0.8s infinite linear;border: 5px solid firebrick;border-right-color: transparent;border-radius: 50%;'></div>
+            <br/>
+            <p style='color:black;text-align:center;font-size: 20px;'>Your Response is submitting <span id='countdown_by_me'></span> <br>Please Wait...</p>
+        </div>
+        <script>
+            var timeleft = 5;
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById('countdown_by_me').innerHTML = ' ';
+  } else {
+    document.getElementById('countdown_by_me').innerHTML = timeleft + 'seconds';
+  }
+  timeleft -= 1;
+}, 1000);
+    // diplay the loader for 5 seconds 
+    //$('#overlay').fadeIn().delay(10000).fadeOut();
+        </script>
+      ";
     $count = $this->input->post('total');
     $serial = 1;
     for($i=0; $i<$count; $i++) {
@@ -227,22 +259,23 @@ function __construct(){
         if ($result) {
               $this->session->set_userdata('eid',$eid);
               $this->session->set_userdata('reg_num',$reg_num);
-              $this->session->set_flashdata('errors', 'Incorrect Login Details.');
-              $this->load->view('student/Header');
-              $this->load->view('student/Show_Exam_result');
-              $this->load->view('student/footer');
+              header('Refresh:10; url= '. base_url().'create_event');
+              
             }else{
                  $this->session->set_userdata('eid',$eid);
               $this->session->set_userdata('reg_num',$reg_num);
               $this->session->set_flashdata('errors', 'Incorrect Login Details.');
-              $this->load->view('student/Header');
-              $this->load->view('student/Show_Exam_result');
-              $this->load->view('student/footer');
+              header('Refresh:5; url= '. base_url().'create_event');
      }
    // }
      
     }
 
+    public function create_event(){
+              $this->load->view('student/Header');
+              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/footer');
+    }
 
     function _checkexist($table,$where){
         $this->db->select('*');

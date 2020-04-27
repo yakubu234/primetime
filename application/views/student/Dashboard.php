@@ -81,13 +81,12 @@ table.center {
                                         $txt = strtotime($endDate);
                                         $Converted_end_date = date('Y-m-d H:i:s', $txt);
                                         $now = strtotime(date("Y-m-d H:i:s"));
-
+                                        $status = $value->status;
                                         if($now >= $Converted_start_date && $now < $Converted_end_date) {
                                          $constraint = "start";
                                         } else {
                                         $constraint = "do not start";
                                         }     
-                                        
                                 echo'
                                     <tr>
                                     <td>'.($key + 1).'</td>
@@ -112,8 +111,8 @@ table.center {
                                             echo '<td>Your Time is up Your result will be announced to you</td>';
                                         }
                                          
-                                    }else{
-                                        if ($constraint == "start"||$constraint =="do not start") {
+                                    }else if ( empty($status) && $constraint == "start" || $constraint =="do not start"){
+                                         
                                      echo'
                                     <td>
                                     <form action="'.base_url("Start_Exam_Now").'" method="POST">
@@ -126,10 +125,14 @@ table.center {
                                     </form>  
                                     </td>
                                 ';}else{
-                                    echo '<td>Start Date has not yet reached or has passed contact the Administrator</td>';
+                                    if ($constraint =="do not start"){
+                                        echo '<td>Start Date has not yet reached or has passed contact the Administrator</td>';
+                                    }else{
+                                    echo "
+                                    <td>Your Time is up Your result will be announced to you</td>";  
+                                }                                  
+                                
                                 }
-                                }
-                                   
                                 }
                             ?>
                           </table>
