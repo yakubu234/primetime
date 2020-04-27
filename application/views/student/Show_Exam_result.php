@@ -68,23 +68,7 @@
 		    <p>Exam Submitted Successfully <br>Result Loading...</p>
 		</div>
         <div class="account-pages"></div>
-        <div class="col-sm-12" >
-                            
-                            <?php if ($this->session->flashdata('errors')) { ?>
-                              <div class="alert alert-primary">
-                                <?=$this->session->flashdata('errors'); ?>
-                              </div>
-                              
-                            <?php } ?>
-                            <!-- success -->
-                            <?php if ($this->session->flashdata('success')) { ?>
-                              <div class="alert alert-success">
-                                <?=$this->session->flashdata('success');?>
-                              </div>
-                              
-                            <?php } ?>
-                            
-                          </div>
+      
         <div class="alert alert-success alert-dismissible fade show col-sm-12" role="alert" style="margin-bottom: -15px;">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>

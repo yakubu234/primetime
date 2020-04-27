@@ -49,4 +49,11 @@ class User_Model extends CI_Model {
         $qry=$this->db->select('*')->from('exam')->get()->result(); 
         return $qry; 
     }
+
+    public function get_category_data(){ 
+       $query = "SELECT Category , reg_num, COUNT(*)FROM student GROUP BY Category";
+           $query = $this->db->query($query);
+           $query = $query->result_array();
+        return $query; 
+    }
 }

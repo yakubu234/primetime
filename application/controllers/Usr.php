@@ -591,6 +591,37 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 
 	}
 
+  public function Subject_Delete_Now_controller(){
+    $id = $this->uri->segment(3);
+            $sn = $this->uri->segment(4);
+             $this->db->where('subject.id',$id);
+              $this->db->delete('subject');
+              if ($this->db->affected_rows() > 0 ) {
+               $this->session->set_flashdata('success', 'Subject Deleted');
+              redirect(base_url() . 'Dashboard_Display');
+              }else{
+               $this->session->set_flashdata('errors', 'Unable to delete Subject');
+           redirect(base_url() . 'Dashboard_Display');
+        }
+  }
+
+  public function Student_Delete_Now_controller(){
+            $id = $this->uri->segment(3);
+            $sn = $this->uri->segment(4);
+             $get = $this->db->get_where('student',array('id'=>$id))->row();
+             $reg_num = $get->reg_num;
+               $this->db->delete('exam_ready', array('exam_ready.reg_num' => $reg_num));
+               $this->db->delete('student_history', array('student_history.reg_num' => $reg_num));
+               $value =$this->db->delete('student', array('student.id' => $id)); 
+              if ($value == true ) {
+               $this->session->set_flashdata('success', 'Student has been Deleted');
+              redirect(base_url() . 'Show_Student_Registered');
+              }else{
+               $this->session->set_flashdata('errors', 'Unable to delete Student');
+           redirect(base_url() . 'Show_Student_Registered');
+        }
+  }
+
   public function send_theory_now(){
     $eid = $this->input->post('eid');
       $data = array(
@@ -636,6 +667,7 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
       		'middlename' =>$this->input->post('middlename'),
       		'reg_num' =>$this->input->post('Reg'),
       		'phone' =>$this->input->post('phone'),
+          'Category' =>$this->input->post('group'),
           'gender' =>$this->input->post('gender'),
       		'img' =>$uploadData['file_name'],
     		);
@@ -697,7 +729,8 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
               $insert_csv['reg_num'] = $csv_line[3];
               $insert_csv['gender'] = $csv_line[4];
               $insert_csv['phone'] = $csv_line[5];
-              $insert_csv['image'] = $csv_line[6];
+              $insert_csv['Category'] = $csv_line[6];
+              $insert_csv['image'] = $csv_line[7];
 
             }
             $i++;
@@ -708,6 +741,7 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
               'reg_num' => $insert_csv['reg_num'],
               'gender' => $insert_csv['gender'],
               'phone' => $insert_csv['phone'],
+              'Category' => $insert_csv['Category'],
               'img' => $insert_csv['image']
             );    
         $this->db->from('student');

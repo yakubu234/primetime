@@ -53,7 +53,7 @@
                                                echo ' <tr>
                                                     <td>'.( 1 + $key).'</td> 
                                                     <td>'.$val->name.' </td>
-                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Usr/JumpQuestion_Admin_delete/' . $val->id . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever" onClick="return doconfirm();"></i></a></td>
+                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Usr/Subject_Delete_Now_controller/' . $val->id . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever" onClick="return doconfirm();"></i></a></td>
                                                 </tr>';
                                                 }
                                                }else{
@@ -90,7 +90,7 @@
 <script>
 function doconfirm()
 {
-    job=confirm("Are you sure to delete admin permanently?");
+    job=confirm("Are you sure to delete this Subject permanently?");
     if(job!=true)
     {
         return false;

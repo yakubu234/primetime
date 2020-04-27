@@ -359,5 +359,7 @@ $('.jump').on('click', function(){
 
 })(window);
 // alert before reload or refresh of page
+
+
             </script>
 <!-- to disable backspace ended -->

@@ -47,20 +47,22 @@
                                                     <th>Name</th>
                                                     <th>Password</th>
                                                     <th>Reg Time</th>
+                                                    <th>&nbsp;&nbsp;</th>
                                                 </tr>
                                         </thead>
                                         <tbody>
                                        <?php
                                                      if ($student) {
-                                                    foreach($student as $val){
+                                                    foreach($student as $key => $val){
                                                         $sn=1;
                                                echo ' <tr>
-                                                    <td>'.$sn.'</td>
+                                                    <td>'.( 1 + $key).'</td>
                                                     <td><img src="'.base_url().'Student_Pic/'.$val["img"].'" alt="" class="rounded" style="width: 70px;height:60px;"></td>
                                                     <td>'.$val["reg_num"].' </td>
                                                     <td>'.$val["surname"]." ".$val["firstname"]." ".$val["middlename"].'</td>
                                                     <td>'.$val["phone"].'</td>
                                                     <td>'.$val["time"].'</td>
+                                                    <td><a title="Delete" style="font-size:30px;text-align:center;color:red;" href=" '.base_url().'Usr/Student_Delete_Now_controller/' . $val["id"] . '/woidmdkwkkoritufdnzxnq120846420"; ><i  class="mdi mdi-delete-forever" onClick="return doconfirm();"></i></a></td>
                                                 </tr>';$sn++;
                                                 }
                                                }else{
@@ -93,3 +95,13 @@
         <!-- page wrapper end -->
 
         <!-- Footer -->
+        <script>
+function doconfirm()
+{
+    job=confirm("Are you sure to delete the select student permanently?");
+    if(job!=true)
+    {
+        return false;
+    }
+}
+</script>

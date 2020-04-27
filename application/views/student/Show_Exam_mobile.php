@@ -159,7 +159,7 @@
     background: green;
     width:20px;
     /*padding: 5px;*/
-    margin:3px;
+    margin:3px 0px;
     color: white
 }
 .danger-now{    background: red;}
@@ -178,6 +178,7 @@
             <div class="spinner"></div>
             <br/>
             <p>Exam is Starting in <span id="countdown_by_me"></span> <br>Question Loading...</p>
+            <p>please note that your device will now be in auto-landscape</p>
         </div>
    
         <!-- Begin page -->
@@ -226,7 +227,7 @@
                 </script>';
                 ?>
                 <div class="row" style="margin: 0px auto;">
-                <button class="btn btn-primary waves-effect waves-light col-sm-9 text-center" > <b>Time Left : <span id="countdown"></span></b></button>    &nbsp;&nbsp;<a class="btn btn-primary" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power"></i> </a></div>                            
+                <button class="btn btn-primary waves-effect waves-light col-sm-9 text-center" > <b>Time Left : <span id="countdown"></span></b></button>    &nbsp;<a class="btn btn-primary col-sm-2 text-center" href="<?php echo base_url('Just_say_Logout'); ?>"><i class="mdi mdi-power"></i> </a></div>                            
                  <div class="row col-sm-12">
                                 <?php
                                 echo '<form action="'.base_url('save_answer_selected?q=quiz&step=2&eid=' . $eid . '&n=12xooiei29&t=' . $total).'"  method="POST" id="form">

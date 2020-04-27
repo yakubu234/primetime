@@ -82,11 +82,19 @@
                                         </div>
                                  </div>
                                  <div class="row">
-                                                <div class="form-group col-sm-6">
+                                                <div class="form-group col-sm-3">
                                             <label>Phone</label>
                                             <div>
                                                 <div class="input-group">
                                                     <input type="text" name="phone" class="form-control floating-label" placeholder="Enter Phone number" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                           <div class="form-group col-sm-3">
+                                            <label>Group / Category</label>
+                                            <div>
+                                                <div class="input-group">
+                                                    <input type="text" name="group" class="form-control floating-label" placeholder="Enter Group I.e. Admission" />
                                                 </div>
                                             </div>
                                         </div>
