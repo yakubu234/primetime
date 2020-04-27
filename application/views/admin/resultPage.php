@@ -33,7 +33,25 @@ foreach ($StudentResult as $key => $examReady) {
   $score = $examReady->score;
   $correct = $examReady->correct;
   $wrong = $examReady->wrong;
+  $Category  = $examReady->Category;
+  $img  = $examReady->img;
+
+  if ($score <= 0) {
+      $score = 0;
+   }
+    $totalByGrade = $totalQuestionReady + 30;
+    if($score >= 0 && $theory !=""){
+      $nowScore = $score + 30;
+      $divStyle=''; // show theory row
+      $per = round(((($theory+$score)*100)/$totalByGrade),1);
+    }else if($score >= 0){
+      $nowScore = $score;
+      
+  $divStyle='style="display:none;"'; //hide theory row
+    $per = round((($score*100)/$totalQuestionReady),1);
 }
+}
+$CummulativeCBTScore= round((($score*100)/$totalQuestion),1);
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +83,7 @@ foreach ($StudentResult as $key => $examReady) {
               <h1><?php echo  $examName; ?></h1>
               <h3>Candidate's Result</h3>
               <div class="avatar">
-                <img class="avatar-img" src="<?php echo base_url(); ?>logo/default-profile.svg" />
+                <img class="avatar-img" onerror="this.src= '<?php echo base_url();?>Student_Pic/dummy.png';" <?php  echo 'src="'.base_url()."Student_Pic/".$img.'"';?>>
               </div>
             </header>
           </div>
@@ -95,7 +113,7 @@ foreach ($StudentResult as $key => $examReady) {
                   </tr>
                   <tr>
                     <td>Group</td>
-                    <td>Admission</td>
+                    <td><?php echo $Category; ?></td>
                   </tr>
                 </tbody>
               </table>
@@ -164,7 +182,7 @@ foreach ($StudentResult as $key => $examReady) {
                   ?>
                   <tr>
                     <td>Cummulative CBT Score</td>
-                    <td>&nbsp;&nbsp;&nbsp;<?php echo round($CummulativePassMark,0) ; ?> %</td>
+                    <td>&nbsp;&nbsp;&nbsp;<?php echo $CummulativeCBTScore; ?> %</td>
                   </tr>
                 </tbody>
               </table>
@@ -178,7 +196,7 @@ foreach ($StudentResult as $key => $examReady) {
                       <span>TOTAL SCORE</span>
                     </td>
                     <td>
-                      <span>77 (59%)</span>
+                      <span><?php echo  $nowScore.'&nbsp;&nbsp;( '.$per. '% )';?></span>
                     </td>
                   </tr>
                 </tbody>
@@ -192,12 +210,13 @@ foreach ($StudentResult as $key => $examReady) {
                 <tbody>
                   <tr>
                     <td>Computer Based Test</td>
-                    <td>63/100</td>
+                    <td><?php echo $score.' / '.$totalQuestionReady;?></td>
                   </tr>
-                  <tr>
+                  <?php
+                  echo '<tr '.$divStyle.'>
                     <td>Theory</td>
-                    <td>14/30</td>
-                  </tr>
+                    <td>'.$theory.'/30</td>
+                  </tr>';?>
                 </tbody>
               </table>
             </div>

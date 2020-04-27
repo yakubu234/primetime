@@ -111,7 +111,7 @@ table.center {
                                             echo '<td>Your Time is up Your result will be announced to you</td>';
                                         }
                                          
-                                    }else if ( empty($status) && $constraint == "start" || $constraint =="do not start"){
+                                    }else if ( empty($status) && $constraint == "start"){
                                          
                                      echo'
                                     <td>
@@ -165,9 +165,9 @@ table.center {
                                     <p> Duration: '.$value->duration.'</p>';
                                     if ($status == "Finished") {
                                         # code...
-                                        echo "<p>Your Time is up Your result will be announced to you</p>";
+                                        echo "<p>It appears you have taken this Exam Your result will be announced to you</p>";
                                     }else{
-                                        if ($constraint == "start" ) {
+                                        if ($constraint == "do not start" ) {
                                             echo "<p>Start Date has not yet reached or has passed contact the Administrator</p>";
                                         }else{
                                         echo '<form action="'.base_url("Start_Exam_Now_mobile").'" method="POST">

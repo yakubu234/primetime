@@ -237,7 +237,7 @@ function __construct(){
       $eid = $this->uri->segment(4);
       $get = $this->db->get_where('exam_ready',array('id'=>$id))->row();
       $reg_num = $get->reg_num;
-      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img,student.gender FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.id = '$id'";
+      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img,student.gender,student.Category FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.id = '$id'";
            $query = $this->db->query($query);
            $usage['StudentResult'] =  $query->result();
            #get count data herefor analysis
@@ -779,6 +779,48 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 		$this->load->view('includes/footer');
 		}
 	}
+
+   public function uploadImage_multiple() {  
+      $data = array(); 
+        $errorUploadType = $statusMsg = ''; 
+        // If file upload form submitted 
+        if($this->input->post()){ 
+            // If files are selected to upload 
+            if(!empty($_FILES['files']['name']) && count(array_filter($_FILES['files']['name'])) > 0){ 
+                $filesCount = count($_FILES['files']['name']); 
+                for($i = 0; $i < $filesCount; $i++){ 
+                    $_FILES['file']['name']     = $_FILES['files']['name'][$i]; 
+                    $_FILES['file']['type']     = $_FILES['files']['type'][$i]; 
+                    $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i]; 
+                    $_FILES['file']['error']     = $_FILES['files']['error'][$i]; 
+                    $_FILES['file']['size']     = $_FILES['files']['size'][$i];                 
+                    // File upload configuration 
+                    $uploadPath = './Student_Pic/'; 
+                    $config['upload_path'] = $uploadPath; 
+                    $config['allowed_types'] = 'jpg|jpeg|png|gif|jfif';                      
+                    // Load and initialize upload library 
+                    $this->load->library('upload', $config); 
+                    $this->upload->initialize($config); 
+                    // Upload file to server 
+                    if($this->upload->do_upload('file')){ 
+                        $fileData = $this->upload->data(); 
+                        $data['totalFiles'][] = $_FILES['file']['name']; 
+                    }else{  
+                        $errorUploadType .= $_FILES['file']['name'].' | ';  
+                    } 
+                } 
+                $errorUploadType = !empty($errorUploadType)?'<br/>File Type Error: '.trim($errorUploadType, ' | '):'';  
+                $data['errorUploadType'][] = $errorUploadType;
+            }else{ 
+               $data['statusMsg'] = 'Please select image files to upload.'; 
+            }
+    $this->load->view('includes/header');
+    $this->load->view('admin/RegisterStudent',$data);
+    $this->load->view('includes/footer');
+        } else{
+          echo "you have not upload anything";
+        }
+   }
 
 	public function Student_Upload(){
 	if(!empty($_FILES['file']['name'])){
