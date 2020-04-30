@@ -37,11 +37,9 @@
                         <div class="col-12">
                             <div class="card m-b-20">
                                 <div class="card-body">
-                                    <form>
                                     <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
-                                            <tr>
-                                                    <th>S/N</th>
+                                            <tr>    <th>S/N</th>
                                                     <th>Exam Title</th>    
                                                     <th>Reg Num</th>
                                                     <th> Candidate Name</th>
@@ -50,6 +48,8 @@
                                         </thead>
                                         <tbody>
                                        <?php
+                                       $eid = $this->session->userdata('eid');
+                                       $usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
                                                      if ($student) {
                                                     foreach($student as $key => $val){
                                                echo ' <tr>
@@ -57,10 +57,7 @@
                                                     <td>'.$val->exam_name.' </td>
                                                     <td>'.$val->reg_num.' </td>
                                                     <td>'.$val->name.'</td>
-                                                    <td>
-                                                    <div class="row" >
-                                                    <input id="get_id" type="hidden"  value="'.$val->id.'"><input id="eid" type="hidden"  value="'.$val->eid.'"> &nbsp;&nbsp;<input type="text" name="theory" value="'.$val->theory.'" class="col-sm-4 form-control" id="theory_score" />&nbsp;&nbsp;<button type="submit" class="btn btn-success waves-effect waves-light" id="Reg_val"><i class="fas fa-check" ></i></button>&nbsp;&nbsp;<button type="button" class="btn btn-primary waves-effect waves-light"><i class="fas fa-times" ></i></button>
-                                                    </div></td>
+                                                    <td>'.$val->theory.'</td>
                                                 </tr>';
                                                 }
                                                }else{
@@ -73,8 +70,6 @@
                                              ?> 
                                         </tbody>
                                     </table>
-                                    
-                                    </form>
                                 </div>
                             </div>
                         </div> <!-- end col -->
@@ -88,28 +83,4 @@
                 <!-- end container-fluid -->
             </div>
             <!-- end page content-->
-
         </div>
-        <!-- page wrapper end -->
-<script>
-    $(document).ready(function(){
-        $('#Reg_val').click(function(){
-            // e.preventDefault();
-            var theory = $("#theory_score").val();;
-            var Userid= $("#get_id").val();
-            var Userid= $("#eid").val();
-            
-              $.ajax({
-                        
-                        method: 'POST',
-                        url: '<?php echo base_url() ?>send_theory_now',
-                        data: {theory:theory,Userid:Userid,eid:eid},
-                        dataType: 'json',
-                        success: function(response){
-alert('data updated'); 
-                        }
-                    });
-        });
-    });
-</script>
-        <!-- Footer -->

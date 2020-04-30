@@ -67,6 +67,7 @@ $route['Add_admin_now_'] = 'Usr/Add_admin_now_function';
 $route['BroadSheet'] = 'Usr/BroadSheet_result_now_function';
 $route['You_Are_Adding_Question_Old_Exam'] = 'Usr/Add_Question_Old_Exam';
 $route['You_Are_Viewing_Question'] = 'Usr/DisplayExamDetails';
+$route['Insert_theory_Now'] = 'Usr/Insert_theory_Now_Controller';
 $route['Create_Question_Old'] = 'Usr/Add_Question_To_Old_Exam';
 $route['Show_Student_Registered'] = 'Usr/ShowStudent';
 $route['Add_Student_To_Access_Specific_Exam'] = 'Usr/ShowStudent_Availabe_for_Exam';

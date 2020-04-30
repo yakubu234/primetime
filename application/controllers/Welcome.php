@@ -272,8 +272,24 @@ var downloadTimer = setInterval(function(){
     }
 
     public function create_event(){
+      $eid = $this->session->userdata('eid');
+            $reg_num = $this->session->userdata('reg_num');
+      $query = "SELECT exam_ready.id,exam_ready.reg_num,exam_ready.name,exam_ready.eid,exam_ready.exam_name,exam_ready.scoreObtainable,exam_ready.totalQuestion,exam_ready.duration,exam_ready.score,exam_ready.theory,exam_ready.correct,exam_ready.wrong,student.phone, student.img,student.gender,student.Category FROM exam_ready INNER JOIN student ON exam_ready.reg_num = student.reg_num WHERE exam_ready.eid = '$eid' AND exam_ready.reg_num = '$reg_num'";
+           $query = $this->db->query($query);
+           $usage['StudentResult'] =  $query->result();
+           #get count data herefor analysis
+           $query = "SELECT subject , user_answer_id, correct_id, COUNT(*)FROM student_history WHERE eid = '$eid' AND reg_num = '$reg_num' GROUP BY subject";
+           $query = $this->db->query($query);
+           $usage['count_course'] = $query->result_array();
+           // var_dump($query->result());
+
+           // count all marks per subject answered
+            $query = "SELECT subject , user_answer_id, correct_id, COUNT(*)FROM student_history WHERE eid = '$eid' AND reg_num = '$reg_num' AND user_answer_id <=> correct_id GROUP BY subject";
+           $query = $this->db->query($query);
+           $usage['score_per_subject'] = $query->result_array();
+          $usage['BroadSheet'] =  $this->db->get_where('exam',array('eid'=>$eid))->result();
               $this->load->view('student/Header');
-              $this->load->view('student/Show_Exam_result');
+              $this->load->view('student/Show_Exam_result',$usage);
               $this->load->view('student/footer');
     }
 

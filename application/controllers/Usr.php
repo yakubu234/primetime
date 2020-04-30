@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Usr extends CI_Controller {
 function __construct(){
     parent::__construct();
@@ -490,6 +489,25 @@ function __construct(){
     }
   }
 
+  public function Insert_theory_Now_Controller(){
+      if($this->input->post()){
+        $eid = $this->session->userdata('eid');
+          $data = array();
+      $count = count($this->input->post('reg_Num'));
+     for($i=0; $i<$count; $i++) {           
+        $data[] = array(
+            'reg_num'=>$this->input->post('reg_Num')[$i],
+            'theory'=>$this->input->post('theory')[$i],
+            'id'=>$this->input->post('userid')[$i]
+            );
+     }
+     $this->db->update_batch('exam_ready',$data, 'id');
+     $this->ShowStudent_Availabe_for_Specific_Exam_show_after_theory_insert($eid);
+      }else{
+
+      }
+  }
+
 	public function ShowStudent_Availabe_for_Exam(){
 		if($this->input->post()){
 			$this->form_validation->set_rules('exam', 'Please Select Exam Name / Title', 'required');
@@ -629,6 +647,8 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 			$eid = $this->input->post('exam');
 		$usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
 		$this->session->set_flashdata('success','You are Viewing Students Registered on the database');
+
+    $this->session->set_userdata('eid',$eid);
 		$this->load->view('includes/header');
 		$this->load->view('admin/Student_For_Exam_specific',$usage);
 		$this->load->view('includes/footer');
@@ -637,6 +657,20 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
 		}
 
 	}
+
+  public function ShowStudent_Availabe_for_Specific_Exam_show_after_theory_insert($eid){
+    
+    $usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
+    $this->session->set_flashdata('success','You are Viewing Students Registered on the database');
+
+    $this->session->set_userdata('eid',$eid);
+    $this->load->view('includes/header');
+    $this->load->view('admin/Student_For_Exam_specific',$usage);
+    $this->load->view('includes/footer'); 
+
+  }
+
+
 
   public function Subject_Delete_Now_controller(){
     $id = $this->uri->segment(3);
@@ -704,23 +738,17 @@ function removeElementWithEmptyRegValue($array, $key,$eid ){
   }
 
   public function send_theory_now(){
-    $eid = $this->input->post('eid');
-      $data = array(
-            'theory' => $this->input->post('theory'),
-            'Userid' => $this->input->post('Userid'),
-        );
-      if(!empty($data)){
-        echo "you are here";
-
-        $eid = $this->input->post('exam');
-    $usage['student'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
+    $eid = $this->input->post('exam');
+      if(!empty($eid)){
+    $usage['student_theory'] =  $this->db->get_where('exam_ready',array('eid'=>$eid))->result();
     $this->session->set_flashdata('success','You are Viewing Students Registered on the database');
+    $this->session->set_userdata('eid',$eid);
     $this->load->view('includes/header');
-    $this->load->view('admin/Student_For_Exam_specific',$usage);
+    $this->load->view('admin/enterTheory',$usage);
     $this->load->view('includes/footer');
-        return true;
       }else{
-        return false;
+        //
+        echo "this is an error. please logout and login"; 
       }
   }
 

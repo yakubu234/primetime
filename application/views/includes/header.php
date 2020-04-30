@@ -187,6 +187,7 @@ input[type=checkbox]:checked + label:before {
                                 <ul class="submenu">
                                     <li><a href="<?php echo base_url('Create_Exam') ?>">Create New Exam</a></li>
                                     <li><a data-toggle="modal" data-target=".bs-example-modal-center">Add Question to old exam</a></li>
+                                    <li><a data-toggle="modal" data-target=".bs-example-modal-center-theory">Add Theory Score</a></li>
                                 </ul>
                             </li>
 
@@ -305,6 +306,48 @@ input[type=checkbox]:checked + label:before {
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
         <!-- check student -->
+
+
+              <!-- enter theory score-->
+        <div class="modal fade bs-example-modal-center-theory" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0">View Candidate for Exam</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                         <form action="<?php echo base_url('send_theory_now') ?>" method="POST" >
+                                        <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <label class="control-label">Select Exam Title</label>
+                                            <select class="form-control select2" name="exam" required="">
+                                                <option selected="" disabled="" >Choose Exam Title</option>
+                                                <?php
+                                                $get_data=$this->User_Model->get_table_data();
+                                                    foreach($get_data as $val){
+                                              echo" <option value='".$val->eid."'>". $val->title."</option>";
+                                               } 
+                                             ?>                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-sm-12" >
+                                            <div style="float:right;">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                   Continue
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+        <!-- enter theory score -->
 
         <!-- delete Exam -->
         <div class="modal fade bs-example-modal-center-remove" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

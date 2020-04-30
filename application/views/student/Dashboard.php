@@ -80,7 +80,7 @@ table.center {
                                         $endDate = str_replace('/', '-', $value->endDate);
                                         $txt = strtotime($endDate);
                                         $Converted_end_date = date('Y-m-d H:i:s', $txt);
-                                        $now = strtotime(date("Y-m-d H:i:s"));
+                                        $now = date("Y-m-d H:i:s");
                                         $status = $value->status;
                                         if($now >= $Converted_start_date && $now < $Converted_end_date) {
                                          $constraint = "start";
@@ -99,19 +99,7 @@ table.center {
                                          echo'
                                     <td>Your Time is up Your result will be announced to you</td>
                                 ';
-                                    }else if($status == "Ongoing"){
-                                        $remaining = (($duration * 60) - ((time() - $time_remain)));
-                                        if ($remaining >0 && $constraint == "start") {
-                                            echo'
-                                    <td>
-                                    <a class="btn btn-Info waves-effect waves-light" href="Start_Exam_Now"><i class="mdi mdi-arrow-right-bold-box-outline" > &nbsp;Continue Exam</i> </a>
-                                    </td>
-                                ';
-                                        }else{
-                                            echo '<td>Your Time is up Your result will be announced to you</td>';
-                                        }
-                                         
-                                    }else if ( empty($status) && $constraint == "start"){
+                                    }else if ($constraint == "start"){
                                          
                                      echo'
                                     <td>
@@ -124,15 +112,9 @@ table.center {
                                     <input type="submit" class="btn btn-success waves-effect waves-light mdi mdi-arrow-right-bold-box-outline" value="&nbsp;Start Exam" >
                                     </form>  
                                     </td>
-                                ';}else{
-                                    if ($constraint =="do not start"){
+                                ';}else if ($constraint =="do not start"){
                                         echo '<td>Start Date has not yet reached or has passed contact the Administrator</td>';
-                                    }else{
-                                    echo "
-                                    <td>Your Time is up Your result will be announced to you</td>";  
-                                }                                  
-                                
-                                }
+                                    }                                  
                                 }
                             ?>
                           </table>
@@ -150,7 +132,7 @@ table.center {
                                         $endDate = str_replace('/', '-', $value->endDate);
                                         $txt = strtotime($endDate);
                                         $Converted_end_date = date('Y-m-d H:i:s', $txt);
-                                        $now = strtotime(date("Y-m-d H:i:s"));
+                                        $now = date("Y-m-d H:i:s");
                                         $status = $value->status;
                                         if($now >= $Converted_start_date && $now < $Converted_end_date) {
                                          $constraint = "start";
